@@ -60,20 +60,11 @@ Content-Type: application/json
 }
 ```
 
-也可以使用手动集成测试新增一条人员信息表数据。该测试默认不会执行，只有显式打开
-`chaoxing.integration-test` 开关才会调用真实超星接口：
+也可以使用手动集成测试新增一条人员信息表数据。测试 sign/key 已临时写在
+`CustomerServiceIntegrationTest` 中；运行前需要先把 `TEST_FID` 改成真实单位 ID。
 
 ```bash
-mvn -Dtest=CustomerServiceIntegrationTest \
-  -Dchaoxing.integration-test=true \
-  -Dchaoxing.test.forms-sign=你的表单sign \
-  -Dchaoxing.test.forms-key=你的表单key \
-  -Dchaoxing.test.fid=你的单位ID \
-  -Dchaoxing.test.customer-level=战略 \
-  -Dchaoxing.test.industry=信息技术 \
-  -Dchaoxing.test.main-contact-id=199752933 \
-  -Dchaoxing.test.main-contact-name=章宇杰 \
-  test
+mvn -Dtest=CustomerServiceIntegrationTest test
 ```
 
 人员信息新增成功后，再测试项目立项与报价审批：
