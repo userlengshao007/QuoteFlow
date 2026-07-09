@@ -1,15 +1,14 @@
 package com.quoteflow.service;
 
+import com.chaoxing.office.app.config.OfficeAppApiConfigTool;
+import com.quoteflow.config.OfficeSdkProperties;
 import com.quoteflow.dto.CustomerCreateRequest;
 import com.quoteflow.dto.FormSubmitVO;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.util.StringUtils;
 
 /**
  * 人员信息服务手动集成测试。
@@ -17,23 +16,22 @@ import org.springframework.util.StringUtils;
  * @author QuoteFlow
  */
 @SpringBootTest
-@EnabledIfSystemProperty(named = "chaoxing.integration-test", matches = "true")
 class CustomerServiceIntegrationTest {
 
     /**
-     * 表单 sign 测试参数名。
+     * 表单测试 sign。
      */
-    private static final String TEST_FORMS_SIGN = "chaoxing.test.forms-sign";
+    private static final String TEST_FORMS_SIGN = "appsFormsData_test";
 
     /**
-     * 表单 key 测试参数名。
+     * 表单测试 key。
      */
-    private static final String TEST_FORMS_KEY = "chaoxing.test.forms-key";
+    private static final String TEST_FORMS_KEY = "C&a%GKQRkIGtxhNdpa";
 
     /**
-     * 单位 ID 测试参数名。
+     * 单位 ID。当前还没有真实值。
      */
-    private static final String TEST_FID = "chaoxing.test.fid";
+    private static final Integer TEST_FID = 176913;
 
     /**
      * 默认客户级别。
@@ -62,22 +60,17 @@ class CustomerServiceIntegrationTest {
     private CustomerService customerService;
 
     /**
-     * 注册手动集成测试使用的超星配置。
-     *
-     * @param registry 动态配置注册器
+     * 超星 SDK 配置。
      */
-    @DynamicPropertySource
-    static void registerChaoxingProperties(DynamicPropertyRegistry registry) {
-        registerIfPresent(registry, "chaoxing.office.forms-sign", TEST_FORMS_SIGN);
-        registerIfPresent(registry, "chaoxing.office.forms-key", TEST_FORMS_KEY);
-        registerIfPresent(registry, "chaoxing.office.fid", TEST_FID);
-    }
+    @Autowired
+    private OfficeSdkProperties officeSdkProperties;
 
     /**
      * 手动调用超星 SDK 新增一条人员信息表数据。
      */
     @Test
     void saveCustomerShouldCreateCustomerFormData() {
+        Assertions.assertTrue(TEST_FID > 0, "请先把 TEST_FID 改成真实单位 ID，再运行真实新增测试");
         CustomerCreateRequest request = buildCustomerCreateRequest();
 
         FormSubmitVO formSubmitVO = customerService.saveCustomer(request);
@@ -86,22 +79,24 @@ class CustomerServiceIntegrationTest {
         Assertions.assertTrue(formSubmitVO.getFormUserId() != null || formSubmitVO.getRepeatFormUserId() != null);
     }
 
+    @BeforeEach
+    void setUpChaoxingTestProperties() {
+        officeSdkProperties.setFormsSign(TEST_FORMS_SIGN);
+        officeSdkProperties.setFormsKey(TEST_FORMS_KEY);
+        officeSdkProperties.setFid(TEST_FID);
+        OfficeAppApiConfigTool.officeApiFormSign = TEST_FORMS_SIGN;
+        OfficeAppApiConfigTool.officeApiFormKey = TEST_FORMS_KEY;
+    }
+
     private CustomerCreateRequest buildCustomerCreateRequest() {
         long currentTimeMillis = System.currentTimeMillis();
         CustomerCreateRequest request = new CustomerCreateRequest();
         request.setCustomerName("接口测试客户-" + currentTimeMillis);
-        request.setCustomerLevel(System.getProperty("chaoxing.test.customer-level", DEFAULT_CUSTOMER_LEVEL));
-        request.setMainContactId(Long.getLong("chaoxing.test.main-contact-id", DEFAULT_MAIN_CONTACT_ID));
-        request.setMainContactName(System.getProperty("chaoxing.test.main-contact-name", DEFAULT_MAIN_CONTACT_NAME));
-        request.setIndustry(System.getProperty("chaoxing.test.industry", DEFAULT_INDUSTRY));
+        request.setCustomerLevel(DEFAULT_CUSTOMER_LEVEL);
+        request.setMainContactId(DEFAULT_MAIN_CONTACT_ID);
+        request.setMainContactName(DEFAULT_MAIN_CONTACT_NAME);
+        request.setIndustry(DEFAULT_INDUSTRY);
         request.setUuid("customer-integration-test-" + currentTimeMillis);
         return request;
-    }
-
-    private static void registerIfPresent(DynamicPropertyRegistry registry, String propertyName, String testName) {
-        String propertyValue = System.getProperty(testName);
-        if (StringUtils.hasText(propertyValue)) {
-            registry.add(propertyName, () -> propertyValue);
-        }
     }
 }
