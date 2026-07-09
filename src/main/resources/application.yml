@@ -1,0 +1,49 @@
+server:
+  port: 8080
+
+chaoxing:
+  office:
+    server-domain: ${CHAOXING_OFFICE_SERVER_DOMAIN:https://m.oa.chaoxing.com}
+    server-front-domain: ${CHAOXING_OFFICE_FRONT_DOMAIN:https://office.chaoxing.com}
+    forms-sign: ${CHAOXING_FORMS_SIGN:}
+    forms-key: ${CHAOXING_FORMS_KEY:}
+    approve-sign: ${CHAOXING_APPROVE_SIGN:}
+    approve-key: ${CHAOXING_APPROVE_KEY:}
+    fid: ${CHAOXING_FID:}
+    submit-uid: ${CHAOXING_SUBMIT_UID:}
+    form:
+      customer-form-id: ${CHAOXING_CUSTOMER_FORM_ID:3412772}
+      project-approve-form-id: ${CHAOXING_PROJECT_APPROVE_FORM_ID:}
+      sales-statistics-form-id: ${CHAOXING_SALES_STATISTICS_FORM_ID:}
+    field:
+      customer-id: customer_id
+      customer-name: customer_name
+      credit-code: credit_code
+      customer-level: customer_level
+      main-contact: main_contact
+      industry: industry
+      attached-files: attached_files
+      project-id: project_id
+      project-code: project_code
+      project-date: project_date
+      expected-finish-date: expected_finish_date
+      project-members: project_members
+      quote-details: quote_details
+      total-quote-amount: total_quote_amount
+      quote-attachment: quote_attachment
+      project-status: project_status
+      product-name: product_name
+      specification: specification
+      quantity: quantity
+      unit-price: unit_price
+      subtotal: subtotal
+      performance-no: performance_no
+      sales-contact: sales_contact
+      quote-total: quote_total
+      statistics-id: performance_id
+      statistics-date: stats_date
+      sales-person: sales_person
+      responsible-customers: responsible_customers
+      project-count: project_count
+      average-project-amount: avg_project_amount
+      search-condition: search_condition
