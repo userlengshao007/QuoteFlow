@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Initializes Chaoxing office SDK static configuration from Spring properties.
+ * 根据 Spring 配置初始化超星办公 SDK 静态配置。
  *
  * @author QuoteFlow
  */
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class OfficeSdkConfiguration {
 
     /**
-     * Chaoxing SDK properties.
+     * 超星 SDK 配置。
      */
     private final OfficeSdkProperties officeSdkProperties;
 
@@ -24,7 +24,7 @@ public class OfficeSdkConfiguration {
     }
 
     /**
-     * Copies Spring configuration into Chaoxing SDK static fields.
+     * 将 Spring 配置复制到超星 SDK 静态字段。
      */
     @PostConstruct
     public void init() {

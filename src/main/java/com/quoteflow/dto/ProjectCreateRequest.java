@@ -7,46 +7,46 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * Project approval creation request.
+ * 项目审批创建请求。
  *
  * @author QuoteFlow
  */
 public class ProjectCreateRequest {
 
     /**
-     * Related customer id.
+     * 关联客户 ID。
      */
     @NotBlank
     private String customerId;
 
     /**
-     * Project date string accepted by Chaoxing date field.
+     * 超星日期字段可接受的立项日期字符串。
      */
     @NotBlank
     private String projectDate;
 
     /**
-     * Expected finish date string accepted by Chaoxing date field.
+     * 超星日期字段可接受的预计完成日期字符串。
      */
     @NotBlank
     private String expectedFinishDate;
 
     /**
-     * Project members.
+     * 项目成员。
      */
     @Valid
     @NotEmpty
     private List<ContactDTO> projectMembers;
 
     /**
-     * Quote detail rows.
+     * 报价明细行。
      */
     @Valid
     @NotEmpty
     private List<QuoteDetailRequest> quoteDetails;
 
     /**
-     * Caller business unique id used for idempotency.
+     * 调用方用于幂等控制的业务唯一 ID。
      */
     private String uuid;
 
@@ -99,9 +99,9 @@ public class ProjectCreateRequest {
     }
 
     /**
-     * Calculates quote total amount.
+     * 计算报价总额。
      *
-     * @return quote total amount
+     * @return 报价总额
      */
     public BigDecimal calculateTotalQuoteAmount() {
         return quoteDetails.stream()

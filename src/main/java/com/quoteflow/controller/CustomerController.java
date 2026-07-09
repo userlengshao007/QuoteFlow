@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Customer REST controller.
+ * 人员信息 REST 控制器。
  *
  * @author QuoteFlow
  */
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController {
 
     /**
-     * Customer service.
+     * 人员信息服务。
      */
     private final CustomerService customerService;
 
@@ -29,10 +29,10 @@ public class CustomerController {
     }
 
     /**
-     * Creates customer form data.
+     * 创建人员信息表单数据。
      *
-     * @param request customer creation request
-     * @return form submission response
+     * @param request 人员信息创建请求
+     * @return 表单提交响应
      */
     @PostMapping
     public ApiResponse<FormSubmitVO> saveCustomer(@Valid @RequestBody CustomerCreateRequest request) {

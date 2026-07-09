@@ -6,32 +6,32 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * Quote detail request.
+ * 报价明细请求。
  *
  * @author QuoteFlow
  */
 public class QuoteDetailRequest {
 
     /**
-     * Product name.
+     * 产品名称。
      */
     @NotBlank
     private String productName;
 
     /**
-     * Specification.
+     * 规格型号。
      */
     private String specification;
 
     /**
-     * Quantity.
+     * 数量。
      */
     @NotNull
     @DecimalMin(value = "0.00", inclusive = false)
     private BigDecimal quantity;
 
     /**
-     * Unit price.
+     * 单价。
      */
     @NotNull
     @DecimalMin(value = "0.00", inclusive = false)
@@ -70,9 +70,9 @@ public class QuoteDetailRequest {
     }
 
     /**
-     * Calculates subtotal amount.
+     * 计算小计金额。
      *
-     * @return subtotal amount
+     * @return 小计金额
      */
     public BigDecimal calculateSubtotal() {
         return quantity.multiply(unitPrice);

@@ -1,19 +1,19 @@
 package com.quoteflow.dto;
 
 /**
- * Project approval submission response view object.
+ * 项目审批提交响应视图对象。
  *
  * @author QuoteFlow
  */
 public class ProjectSubmitVO {
 
     /**
-     * Chaoxing approval data id.
+     * 超星审批数据 ID。
      */
     private Long formUserId;
 
     /**
-     * Approval detail page url.
+     * 审批详情页地址。
      */
     private String detailUrl;
 

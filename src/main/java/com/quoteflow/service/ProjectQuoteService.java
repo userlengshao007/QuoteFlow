@@ -4,17 +4,17 @@ import com.quoteflow.dto.ProjectCreateRequest;
 import com.quoteflow.dto.ProjectSubmitVO;
 
 /**
- * Project quote service.
+ * 项目立项与报价服务。
  *
  * @author QuoteFlow
  */
 public interface ProjectQuoteService {
 
     /**
-     * Submits project quote approval.
+     * 提交项目立项与报价审批。
      *
-     * @param request project creation request
-     * @return project approval submission result
+     * @param request 项目创建请求
+     * @return 项目审批提交结果
      */
     ProjectSubmitVO submitProjectApproval(ProjectCreateRequest request);
 }

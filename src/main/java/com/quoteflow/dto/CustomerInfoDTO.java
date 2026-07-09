@@ -1,29 +1,29 @@
 package com.quoteflow.dto;
 
 /**
- * Customer information transfer object.
+ * 客户信息传输对象。
  *
  * @author QuoteFlow
  */
 public class CustomerInfoDTO {
 
     /**
-     * Customer id.
+     * 客户 ID。
      */
     private String customerId;
 
     /**
-     * Customer name.
+     * 客户名称。
      */
     private String customerName;
 
     /**
-     * Customer level.
+     * 客户级别。
      */
     private String customerLevel;
 
     /**
-     * Main contact.
+     * 主要联系人。
      */
     private ContactDTO mainContact;
 

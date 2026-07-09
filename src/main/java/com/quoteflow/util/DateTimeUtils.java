@@ -10,14 +10,14 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Date time utility.
+ * 日期时间工具。
  *
  * @author QuoteFlow
  */
 public final class DateTimeUtils {
 
     /**
-     * Date formatter.
+     * 日期格式化器。
      */
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -25,20 +25,20 @@ public final class DateTimeUtils {
     }
 
     /**
-     * Converts yyyy-MM-dd date to start-of-day epoch milliseconds.
+     * 将 yyyy-MM-dd 日期转换为当天开始的毫秒时间戳。
      *
-     * @param date date string
-     * @return epoch milliseconds
+     * @param date 日期字符串
+     * @return 毫秒时间戳
      */
     public static Long toStartOfDayMillis(String date) {
         return toMillis(date, LocalTime.MIN);
     }
 
     /**
-     * Converts yyyy-MM-dd date to end-of-day epoch milliseconds.
+     * 将 yyyy-MM-dd 日期转换为当天结束的毫秒时间戳。
      *
-     * @param date date string
-     * @return epoch milliseconds
+     * @param date 日期字符串
+     * @return 毫秒时间戳
      */
     public static Long toEndOfDayMillis(String date) {
         return toMillis(date, LocalTime.MAX);

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Global exception handler for REST APIs.
+ * REST 接口全局异常处理器。
  *
  * @author QuoteFlow
  */
@@ -21,15 +21,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     /**
-     * Logger.
+     * 日志记录器。
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * Handles business exceptions.
+     * 处理业务异常。
      *
-     * @param exception business exception
-     * @return unified response
+     * @param exception 业务异常
+     * @return 统一响应
      */
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.OK)
@@ -40,10 +40,10 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handles request validation exceptions.
+     * 处理请求参数校验异常。
      *
-     * @param exception validation exception
-     * @return unified response
+     * @param exception 参数校验异常
+     * @return 统一响应
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -55,10 +55,10 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handles bind exceptions.
+     * 处理参数绑定异常。
      *
-     * @param exception bind exception
-     * @return unified response
+     * @param exception 参数绑定异常
+     * @return 统一响应
      */
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -70,10 +70,10 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handles unexpected exceptions.
+     * 处理未预期异常。
      *
-     * @param exception unexpected exception
-     * @return unified response
+     * @param exception 未预期异常
+     * @return 统一响应
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

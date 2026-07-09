@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Project quote REST controller.
+ * 项目立项与报价 REST 控制器。
  *
  * @author QuoteFlow
  */
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectQuoteController {
 
     /**
-     * Project quote service.
+     * 项目立项与报价服务。
      */
     private final ProjectQuoteService projectQuoteService;
 
@@ -29,10 +29,10 @@ public class ProjectQuoteController {
     }
 
     /**
-     * Submits project quote approval.
+     * 提交项目立项与报价审批。
      *
-     * @param request project creation request
-     * @return project approval submission response
+     * @param request 项目创建请求
+     * @return 项目审批提交响应
      */
     @PostMapping
     public ApiResponse<ProjectSubmitVO> submitProjectApproval(@Valid @RequestBody ProjectCreateRequest request) {

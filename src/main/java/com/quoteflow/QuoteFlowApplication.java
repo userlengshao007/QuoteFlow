@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * QuoteFlow application bootstrap.
+ * QuoteFlow 应用启动类。
  *
  * @author QuoteFlow
  */
@@ -12,9 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class QuoteFlowApplication {
 
     /**
-     * Starts the Spring Boot application.
+     * 启动 Spring Boot 应用。
      *
-     * @param args startup arguments
+     * @param args 启动参数
      */
     public static void main(String[] args) {
         SpringApplication.run(QuoteFlowApplication.class, args);

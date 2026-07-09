@@ -10,11 +10,11 @@ chaoxing:
     approve-sign: ${CHAOXING_APPROVE_SIGN:}
     approve-key: ${CHAOXING_APPROVE_KEY:}
     fid: ${CHAOXING_FID:}
-    submit-uid: ${CHAOXING_SUBMIT_UID:}
+    submit-uid: ${CHAOXING_SUBMIT_UID:199752933}
     form:
       customer-form-id: ${CHAOXING_CUSTOMER_FORM_ID:3412772}
-      project-approve-form-id: ${CHAOXING_PROJECT_APPROVE_FORM_ID:}
-      sales-statistics-form-id: ${CHAOXING_SALES_STATISTICS_FORM_ID:}
+      project-approve-form-id: ${CHAOXING_PROJECT_APPROVE_FORM_ID:3412949}
+      sales-statistics-form-id: ${CHAOXING_SALES_STATISTICS_FORM_ID:3412951}
     field:
       customer-id: customer_id
       customer-name: customer_name

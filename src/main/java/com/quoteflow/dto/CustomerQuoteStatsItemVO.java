@@ -3,29 +3,29 @@ package com.quoteflow.dto;
 import java.math.BigDecimal;
 
 /**
- * Customer quote statistics item.
+ * 客户报价统计明细。
  *
  * @author QuoteFlow
  */
 public class CustomerQuoteStatsItemVO {
 
     /**
-     * Customer id.
+     * 客户 ID。
      */
     private String customerId;
 
     /**
-     * Customer name.
+     * 客户名称。
      */
     private String customerName;
 
     /**
-     * Project count.
+     * 项目数量。
      */
     private Integer projectCount;
 
     /**
-     * Total quote amount.
+     * 报价总额。
      */
     private BigDecimal totalQuoteAmount;
 

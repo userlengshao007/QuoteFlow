@@ -1,29 +1,29 @@
 package com.quoteflow.dto;
 
 /**
- * Sales performance statistics request.
+ * 销售业绩统计请求。
  *
  * @author QuoteFlow
  */
 public class SalesPerformanceStatisticsRequest {
 
     /**
-     * Customer level filter.
+     * 客户级别筛选条件。
      */
     private String customerLevel;
 
     /**
-     * Project date start, accepted by Chaoxing date field.
+     * 超星日期字段可接受的项目日期开始值。
      */
     private String projectDateStart;
 
     /**
-     * Project date end, accepted by Chaoxing date field.
+     * 超星日期字段可接受的项目日期结束值。
      */
     private String projectDateEnd;
 
     /**
-     * Sales name fuzzy filter.
+     * 销售姓名模糊筛选条件。
      */
     private String salesName;
 

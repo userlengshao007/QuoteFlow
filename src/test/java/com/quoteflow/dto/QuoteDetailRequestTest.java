@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for {@link QuoteDetailRequest}.
+ * 单元测试： {@link QuoteDetailRequest}.
  *
  * @author QuoteFlow
  */
 class QuoteDetailRequestTest {
 
     /**
-     * Tests subtotal calculation.
+     * 测试小计金额计算。
      */
     @Test
     void calculateSubtotalShouldMultiplyQuantityAndUnitPrice() {

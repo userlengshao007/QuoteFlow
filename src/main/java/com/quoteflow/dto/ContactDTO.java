@@ -4,20 +4,20 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * Contact transfer object.
+ * 联系人传输对象。
  *
  * @author QuoteFlow
  */
 public class ContactDTO {
 
     /**
-     * Chaoxing user uid or passport id.
+     * 超星用户 UID 或 passportId。
      */
     @NotNull
     private Long uid;
 
     /**
-     * User display name.
+     * 用户展示名称。
      */
     @NotBlank
     private String name;

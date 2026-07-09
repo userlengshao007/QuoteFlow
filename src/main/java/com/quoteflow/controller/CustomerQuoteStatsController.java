@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Customer quote statistics REST controller.
+ * 客户报价统计 REST 控制器。
  *
  * @author QuoteFlow
  */
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerQuoteStatsController {
 
     /**
-     * Customer quote statistics service.
+     * 客户报价统计服务。
      */
     private final CustomerQuoteStatsService customerQuoteStatsService;
 
@@ -30,10 +30,10 @@ public class CustomerQuoteStatsController {
     }
 
     /**
-     * Summarizes selected projects by customer.
+     * 按客户汇总选中的项目数据。
      *
-     * @param request customer quote statistics request
-     * @return customer quote statistics items
+     * @param request 客户报价统计请求
+     * @return 客户报价统计明细列表
      */
     @PostMapping
     public ApiResponse<List<CustomerQuoteStatsItemVO>> summarizeByCustomer(

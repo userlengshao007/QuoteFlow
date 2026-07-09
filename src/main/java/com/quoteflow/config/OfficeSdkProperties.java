@@ -3,7 +3,7 @@ package com.quoteflow.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Chaoxing office SDK and form mapping configuration.
+ * 超星办公 SDK 与表单映射配置。
  *
  * @author QuoteFlow
  */
@@ -11,52 +11,52 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class OfficeSdkProperties {
 
     /**
-     * Chaoxing office API backend domain.
+     * 超星办公 API 后端域名。
      */
     private String serverDomain;
 
     /**
-     * Chaoxing office front domain.
+     * 超星办公前端域名。
      */
     private String serverFrontDomain;
 
     /**
-     * Forms API sign.
+     * 表单 API sign。
      */
     private String formsSign;
 
     /**
-     * Forms API key.
+     * 表单 API key。
      */
     private String formsKey;
 
     /**
-     * Approval API sign.
+     * 审批 API sign。
      */
     private String approveSign;
 
     /**
-     * Approval API key.
+     * 审批 API key。
      */
     private String approveKey;
 
     /**
-     * Unit id required by Chaoxing SDK.
+     * 超星 SDK 必填的单位 ID。
      */
     private Integer fid;
 
     /**
-     * Default submitter uid used before user login integration is available.
+     * 接入登录前使用的默认提交人 UID。
      */
     private Long submitUid;
 
     /**
-     * Form id mapping.
+     * 表单 ID 映射。
      */
     private Form form;
 
     /**
-     * Field alias mapping.
+     * 字段别名映射。
      */
     private Field field;
 
@@ -141,24 +141,24 @@ public class OfficeSdkProperties {
     }
 
     /**
-     * Chaoxing form id mapping.
+     * 超星表单 ID 映射。
      *
      * @author QuoteFlow
      */
     public static class Form {
 
         /**
-         * Customer information form id.
+         * 人员信息表 ID。
          */
         private Integer customerFormId;
 
         /**
-         * Project approval form id.
+         * 项目立项与报价审批表 ID。
          */
         private Integer projectApproveFormId;
 
         /**
-         * Sales statistics form id.
+         * 销售业绩统计表 ID。
          */
         private Integer salesStatisticsFormId;
 
@@ -188,164 +188,164 @@ public class OfficeSdkProperties {
     }
 
     /**
-     * Chaoxing field alias mapping.
+     * 超星字段别名映射。
      *
      * @author QuoteFlow
      */
     public static class Field {
 
         /**
-         * Customer id alias.
+         * 客户 ID 字段别名。
          */
         private String customerId;
 
         /**
-         * Customer name alias.
+         * 客户名称字段别名。
          */
         private String customerName;
 
         /**
-         * Credit code alias.
+         * 统一信用代码字段别名。
          */
         private String creditCode;
 
         /**
-         * Customer level alias.
+         * 客户级别字段别名。
          */
         private String customerLevel;
 
         /**
-         * Main contact alias.
+         * 主要联系人字段别名。
          */
         private String mainContact;
 
         /**
-         * Industry alias.
+         * 所属行业字段别名。
          */
         private String industry;
 
         /**
-         * Attached files alias.
+         * 资质文件字段别名。
          */
         private String attachedFiles;
 
         /**
-         * Project id alias.
+         * 项目 ID 字段别名。
          */
         private String projectId;
 
         /**
-         * Project code alias.
+         * 项目编号字段别名。
          */
         private String projectCode;
 
         /**
-         * Project date alias.
+         * 立项日期字段别名。
          */
         private String projectDate;
 
         /**
-         * Expected finish date alias.
+         * 预计完成日期字段别名。
          */
         private String expectedFinishDate;
 
         /**
-         * Project members alias.
+         * 项目成员字段别名。
          */
         private String projectMembers;
 
         /**
-         * Quote details alias.
+         * 报价明细字段别名。
          */
         private String quoteDetails;
 
         /**
-         * Total quote amount alias.
+         * 报价总额字段别名。
          */
         private String totalQuoteAmount;
 
         /**
-         * Quote attachment alias.
+         * 报价单附件字段别名。
          */
         private String quoteAttachment;
 
         /**
-         * Project status alias.
+         * 项目状态字段别名。
          */
         private String projectStatus;
 
         /**
-         * Product name alias.
+         * 产品名称字段别名。
          */
         private String productName;
 
         /**
-         * Specification alias.
+         * 规格型号字段别名。
          */
         private String specification;
 
         /**
-         * Quantity alias.
+         * 数量字段别名。
          */
         private String quantity;
 
         /**
-         * Unit price alias.
+         * 单价字段别名。
          */
         private String unitPrice;
 
         /**
-         * Subtotal alias.
+         * 小计字段别名。
          */
         private String subtotal;
 
         /**
-         * Performance number alias.
+         * 业绩编号字段别名。
          */
         private String performanceNo;
 
         /**
-         * Sales contact alias.
+         * 销售联系人字段别名。
          */
         private String salesContact;
 
         /**
-         * Quote total alias.
+         * 项目报价总额字段别名。
          */
         private String quoteTotal;
 
         /**
-         * Statistics id alias.
+         * 统计编号字段别名。
          */
         private String statisticsId;
 
         /**
-         * Statistics date alias.
+         * 统计日期字段别名。
          */
         private String statisticsDate;
 
         /**
-         * Sales person alias.
+         * 销售人员字段别名。
          */
         private String salesPerson;
 
         /**
-         * Responsible customers alias.
+         * 负责客户数字段别名。
          */
         private String responsibleCustomers;
 
         /**
-         * Project count alias.
+         * 立项项目数字段别名。
          */
         private String projectCount;
 
         /**
-         * Average project amount alias.
+         * 平均项目金额字段别名。
          */
         private String averageProjectAmount;
 
         /**
-         * Search condition alias.
+         * 筛选条件字段别名。
          */
         private String searchCondition;
 

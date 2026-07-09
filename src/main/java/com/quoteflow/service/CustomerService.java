@@ -5,25 +5,25 @@ import com.quoteflow.dto.CustomerInfoDTO;
 import com.quoteflow.dto.FormSubmitVO;
 
 /**
- * Customer service.
+ * 人员信息服务。
  *
  * @author QuoteFlow
  */
 public interface CustomerService {
 
     /**
-     * Creates a customer form data record.
+     * 创建一条人员信息表数据。
      *
-     * @param request customer creation request
-     * @return form submission result
+     * @param request 人员信息创建请求
+     * @return 表单提交结果
      */
     FormSubmitVO saveCustomer(CustomerCreateRequest request);
 
     /**
-     * Gets customer information by customer id.
+     * 根据客户 ID 获取客户信息。
      *
-     * @param customerId customer id
-     * @return customer information
+     * @param customerId 客户 ID
+     * @return 客户信息
      */
     CustomerInfoDTO getCustomerByCustomerId(String customerId);
 }

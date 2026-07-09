@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for {@link ProjectCreateRequest}.
+ * 单元测试： {@link ProjectCreateRequest}.
  *
  * @author QuoteFlow
  */
 class ProjectCreateRequestTest {
 
     /**
-     * Tests total quote amount calculation.
+     * 测试报价总额计算。
      */
     @Test
     void calculateTotalQuoteAmountShouldSumAllDetailSubtotals() {

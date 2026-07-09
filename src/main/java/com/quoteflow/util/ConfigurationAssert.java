@@ -5,7 +5,7 @@ import com.quoteflow.exception.ErrorCodeEnum;
 import org.springframework.util.StringUtils;
 
 /**
- * Configuration validation utility.
+ * 配置校验工具。
  *
  * @author QuoteFlow
  */
@@ -15,12 +15,12 @@ public final class ConfigurationAssert {
     }
 
     /**
-     * Requires a non-null value.
+     * 要求配置值不能为空。
      *
-     * @param value configuration value
-     * @param name configuration name
-     * @param <T> value type
-     * @return original value
+     * @param value 配置值
+     * @param name 配置名称
+     * @param <T> 值类型
+     * @return 原始值
      */
     public static <T> T requireNonNull(T value, String name) {
         if (value == null) {
@@ -30,11 +30,11 @@ public final class ConfigurationAssert {
     }
 
     /**
-     * Requires a non-blank string value.
+     * 要求字符串配置值不能为空白。
      *
-     * @param value configuration value
-     * @param name configuration name
-     * @return original value
+     * @param value 配置值
+     * @param name 配置名称
+     * @return 原始值
      */
     public static String requireNonBlank(String value, String name) {
         if (!StringUtils.hasText(value)) {

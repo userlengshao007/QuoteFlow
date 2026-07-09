@@ -27,7 +27,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * Customer service implementation.
+ * 人员信息服务实现。
  *
  * @author QuoteFlow
  */
@@ -35,18 +35,18 @@ import org.springframework.stereotype.Service;
 public class CustomerServiceImpl implements CustomerService {
 
     /**
-     * Customer query return fields.
+     * 客户查询返回字段。
      */
     private static final String CUSTOMER_RETURN_FIELDS =
             "[{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"}]";
 
     /**
-     * Chaoxing office client.
+     * 超星办公客户端。
      */
     private final ChaoxingOfficeClient chaoxingOfficeClient;
 
     /**
-     * Chaoxing SDK properties.
+     * 超星 SDK 配置。
      */
     private final OfficeSdkProperties officeSdkProperties;
 

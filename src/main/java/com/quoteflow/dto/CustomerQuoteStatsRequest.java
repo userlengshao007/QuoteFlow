@@ -3,14 +3,14 @@ package com.quoteflow.dto;
 import javax.validation.constraints.NotBlank;
 
 /**
- * Customer quote statistics request.
+ * 客户报价统计请求。
  *
  * @author QuoteFlow
  */
 public class CustomerQuoteStatsRequest {
 
     /**
-     * Selected project form user ids, separated by comma.
+     * 选中的项目表单数据 ID，多个用英文逗号分隔。
      */
     @NotBlank
     private String formUserIds;

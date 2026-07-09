@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Utility for extracting values from Chaoxing form fields.
+ * 从超星表单字段中提取值的工具。
  *
  * @author QuoteFlow
  */
@@ -22,11 +22,11 @@ public final class FormFieldValueUtils {
     }
 
     /**
-     * Gets first text-like value by alias.
+     * 根据别名获取第一个文本类值。
      *
-     * @param apiFormUser form data
-     * @param alias field alias
-     * @return first text-like value
+     * @param apiFormUser 表单数据
+     * @param alias 字段别名
+     * @return 第一个文本类值
      */
     public static String getFirstText(ApiFormUser apiFormUser, String alias) {
         Field field = findField(apiFormUser, alias);
@@ -51,11 +51,11 @@ public final class FormFieldValueUtils {
     }
 
     /**
-     * Gets first number value by alias.
+     * 根据别名获取第一个数字值。
      *
-     * @param apiFormUser form data
-     * @param alias field alias
-     * @return first number value
+     * @param apiFormUser 表单数据
+     * @param alias 字段别名
+     * @return 第一个数字值
      */
     public static BigDecimal getFirstNumber(ApiFormUser apiFormUser, String alias) {
         Field field = findField(apiFormUser, alias);
@@ -79,11 +79,11 @@ public final class FormFieldValueUtils {
     }
 
     /**
-     * Gets first contact value by alias.
+     * 根据别名获取第一个联系人值。
      *
-     * @param apiFormUser form data
-     * @param alias field alias
-     * @return first contact
+     * @param apiFormUser 表单数据
+     * @param alias 字段别名
+     * @return 第一个联系人
      */
     public static ContactDTO getFirstContact(ApiFormUser apiFormUser, String alias) {
         Field field = findField(apiFormUser, alias);

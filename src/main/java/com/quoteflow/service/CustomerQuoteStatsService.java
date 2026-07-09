@@ -5,17 +5,17 @@ import com.quoteflow.dto.CustomerQuoteStatsRequest;
 import java.util.List;
 
 /**
- * Customer quote statistics service.
+ * 客户报价统计服务。
  *
  * @author QuoteFlow
  */
 public interface CustomerQuoteStatsService {
 
     /**
-     * Summarizes total quote amount by customer.
+     * 按客户汇总报价总额。
      *
-     * @param request customer quote statistics request
-     * @return statistics items
+     * @param request 客户报价统计请求
+     * @return 统计明细列表
      */
     List<CustomerQuoteStatsItemVO> summarizeByCustomer(CustomerQuoteStatsRequest request);
 }

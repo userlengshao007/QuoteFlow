@@ -1,44 +1,44 @@
 package com.quoteflow.exception;
 
 /**
- * Business error code enum.
+ * 业务错误码枚举。
  *
  * @author QuoteFlow
  */
 public enum ErrorCodeEnum {
 
     /**
-     * Invalid request parameters.
+     * 请求参数不合法。
      */
     INVALID_PARAMETER("400", "请求参数不合法"),
 
     /**
-     * Required platform configuration is missing.
+     * 必要平台配置缺失。
      */
     MISSING_CONFIGURATION("5001", "平台配置缺失"),
 
     /**
-     * Chaoxing SDK call failed.
+     * 超星 SDK 调用失败。
      */
     CHAOXING_SDK_ERROR("5002", "超星接口调用失败"),
 
     /**
-     * Customer data does not exist.
+     * 客户数据不存在。
      */
     CUSTOMER_NOT_FOUND("6001", "客户信息不存在"),
 
     /**
-     * Project data does not exist.
+     * 项目数据不存在。
      */
     PROJECT_NOT_FOUND("6002", "项目信息不存在");
 
     /**
-     * Error code.
+     * 错误码。
      */
     private final String code;
 
     /**
-     * Error message.
+     * 错误消息。
      */
     private final String message;
 

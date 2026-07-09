@@ -3,39 +3,39 @@ package com.quoteflow.dto;
 import java.math.BigDecimal;
 
 /**
- * Sales performance statistics response.
+ * 销售业绩统计响应。
  *
  * @author QuoteFlow
  */
 public class SalesPerformanceStatisticsVO {
 
     /**
-     * Statistics form data id.
+     * 统计表单数据 ID。
      */
     private Long formUserId;
 
     /**
-     * Statistics number.
+     * 统计编号。
      */
     private String statisticsId;
 
     /**
-     * Responsible customer count.
+     * 负责客户数。
      */
     private Integer responsibleCustomers;
 
     /**
-     * Project count.
+     * 项目数量。
      */
     private Integer projectCount;
 
     /**
-     * Total quote amount.
+     * 报价总额。
      */
     private BigDecimal totalQuoteAmount;
 
     /**
-     * Average project amount.
+     * 平均项目金额。
      */
     private BigDecimal averageProjectAmount;
 

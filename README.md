@@ -1,17 +1,17 @@
 # QuoteFlow
 
-QuoteFlow is a Spring Boot backend that wraps the Chaoxing office form and approval SDK.
+QuoteFlow 是一个 Spring Boot 后端服务，用于封装超星办公表单和审批 SDK。
 
-## Current Scope
+## 当前范围
 
-- Create customer form data.
-- Submit project quote approval data.
-- Search selected project data and summarize quote amount by customer.
-- Create sales performance statistics data.
+- 新增人员信息表数据。
+- 发起项目立项与报价审批数据。
+- 查询选中的项目数据，并按客户汇总报价总额。
+- 生成销售业绩统计数据。
 
-## Required Configuration
+## 必要配置
 
-Set these values before calling real Chaoxing APIs:
+真实调用超星接口前，需要配置以下环境变量：
 
 ```bash
 export CHAOXING_FORMS_SIGN=
@@ -19,27 +19,32 @@ export CHAOXING_FORMS_KEY=
 export CHAOXING_APPROVE_SIGN=
 export CHAOXING_APPROVE_KEY=
 export CHAOXING_FID=
-export CHAOXING_SUBMIT_UID=
+export CHAOXING_SUBMIT_UID=199752933
 export CHAOXING_CUSTOMER_FORM_ID=3412772
-export CHAOXING_PROJECT_APPROVE_FORM_ID=
-export CHAOXING_SALES_STATISTICS_FORM_ID=
+export CHAOXING_PROJECT_APPROVE_FORM_ID=3412949
+export CHAOXING_SALES_STATISTICS_FORM_ID=3412951
 ```
 
-Current table scope:
+当前三张业务表：
 
-| Business table | Config key | Current value |
+| 业务表 | 配置项 | 当前值 |
 | --- | --- | --- |
 | 人员信息表 | `CHAOXING_CUSTOMER_FORM_ID` | `3412772` |
-| 项目立项与报价表 | `CHAOXING_PROJECT_APPROVE_FORM_ID` | waiting for creation |
-| 销售业绩统计表 | `CHAOXING_SALES_STATISTICS_FORM_ID` | waiting for creation |
+| 项目立项与报价表 | `CHAOXING_PROJECT_APPROVE_FORM_ID` | `3412949` |
+| 销售业绩统计表 | `CHAOXING_SALES_STATISTICS_FORM_ID` | `3412951` |
 
-Field aliases are configured in `src/main/resources/application.yml`. They currently follow the requirement
-document, such as `customer_name`, `project_members`, and `total_quote_amount`. Replace them if the platform uses
-different aliases or numeric field ids.
+当前测试提交人：
 
-## First Integration Step
+| 用户 | 配置项 | 当前值 |
+| --- | --- | --- |
+| 章宇杰 | `CHAOXING_SUBMIT_UID` | `199752933` |
 
-Start with customer creation, because it only depends on the normal form SDK:
+字段别名配置在 `src/main/resources/application.yml`。目前先按需求文档中的字段别名配置，例如
+`customer_name`、`project_members`、`total_quote_amount`。如果平台实际字段别名或字段 ID 不一致，需要同步修改配置。
+
+## 首个联调接口
+
+建议先从人员信息新增开始，因为它只依赖普通表单 SDK：
 
 ```http
 POST /api/customers
@@ -55,7 +60,7 @@ Content-Type: application/json
 }
 ```
 
-After customer creation succeeds, test project approval:
+人员信息新增成功后，再测试项目立项与报价审批：
 
 ```http
 POST /api/projects
@@ -82,9 +87,9 @@ Content-Type: application/json
 }
 ```
 
-## Notes
+## 注意事项
 
-- `lib/office-api-sdk-1.22.2.jar` is the local Chaoxing SDK jar.
-- Formula and auto-number fields are sent with `new XxxField(alias, true)` so the platform can calculate defaults.
-- Attachment upload is not implemented yet because the upload API and returned `objectId` or `resid` are not available.
-- Approval callback or data-push handling is not implemented yet because callback parameters and signature rules are not available.
+- `lib/office-api-sdk-1.22.2.jar` 是本地超星 SDK。
+- 公式字段和自动编号字段通过 `new XxxField(alias, true)` 触发平台默认值或公式计算。
+- 附件上传暂未实现，因为目前还没有附件上传接口以及 `objectId`、`resid` 等返回字段说明。
+- 审批回调或数据推送暂未实现，因为目前还没有回调参数和签名校验规则说明。

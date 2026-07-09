@@ -17,7 +17,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * Customer quote statistics service implementation.
+ * 客户报价统计服务实现。
  *
  * @author QuoteFlow
  */
@@ -25,23 +25,23 @@ import org.springframework.stereotype.Service;
 public class CustomerQuoteStatsServiceImpl implements CustomerQuoteStatsService {
 
     /**
-     * Customer quote statistics return fields.
+     * 客户报价统计返回字段。
      */
     private static final String PROJECT_RETURN_FIELDS =
             "[{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"}]";
 
     /**
-     * Maximum selected data size per SDK request.
+     * 单次 SDK 请求的最大选中数据量。
      */
     private static final Integer MAX_SELECTED_SIZE = 100;
 
     /**
-     * Chaoxing office client.
+     * 超星办公客户端。
      */
     private final ChaoxingOfficeClient chaoxingOfficeClient;
 
     /**
-     * Chaoxing SDK properties.
+     * 超星 SDK 配置。
      */
     private final OfficeSdkProperties officeSdkProperties;
 

@@ -4,17 +4,17 @@ import com.quoteflow.dto.SalesPerformanceStatisticsRequest;
 import com.quoteflow.dto.SalesPerformanceStatisticsVO;
 
 /**
- * Sales performance service.
+ * 销售业绩统计服务。
  *
  * @author QuoteFlow
  */
 public interface SalesPerformanceService {
 
     /**
-     * Creates sales performance statistics.
+     * 创建销售业绩统计。
      *
-     * @param request statistics request
-     * @return statistics result
+     * @param request 统计请求
+     * @return 统计结果
      */
     SalesPerformanceStatisticsVO createStatistics(SalesPerformanceStatisticsRequest request);
 }

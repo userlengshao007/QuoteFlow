@@ -6,33 +6,33 @@ import com.chaoxing.office.app.entity.forms.vo.response.ApiModifyResponse;
 import com.chaoxing.office.app.entity.forms.vo.response.ApiSearchResponse;
 
 /**
- * Chaoxing office SDK client facade.
+ * 超星办公 SDK 客户端门面。
  *
  * @author QuoteFlow
  */
 public interface ChaoxingOfficeClient {
 
     /**
-     * Saves one normal form data record.
+     * 保存一条普通表单数据。
      *
-     * @param formId form id
-     * @param submitUid submitter uid
-     * @param uuid caller business unique id
-     * @param formsData form data
-     * @return Chaoxing modify response
+     * @param formId 表单 ID
+     * @param submitUid 提交人 UID
+     * @param uuid 调用方业务唯一 ID
+     * @param formsData 表单数据
+     * @return 超星变更响应
      */
     ApiModifyResponse saveFormData(Integer formId, Long submitUid, String uuid, FormsData formsData);
 
     /**
-     * Searches normal form data.
+     * 检索普通表单数据。
      *
-     * @param formId form id
-     * @param returnFields return field json
-     * @param logicSearchFilter logic search filter
-     * @param formUserIds form data id list, separated by comma
-     * @param cpage page number
-     * @param pageSize page size
-     * @return Chaoxing search response
+     * @param formId 表单 ID
+     * @param returnFields 返回字段 JSON
+     * @param logicSearchFilter 逻辑检索条件
+     * @param formUserIds 表单数据 ID 列表，多个用英文逗号分隔
+     * @param cpage 页码
+     * @param pageSize 每页条数
+     * @return 超星检索响应
      */
     ApiSearchResponse searchFormData(Integer formId,
                                      String returnFields,
@@ -42,24 +42,24 @@ public interface ChaoxingOfficeClient {
                                      Integer pageSize);
 
     /**
-     * Submits one approval data record.
+     * 提交一条审批数据。
      *
-     * @param approvalFormId approval form id
-     * @param submitUid submitter uid
-     * @param formsData form data
-     * @return Chaoxing modify response
+     * @param approvalFormId 审批表单 ID
+     * @param submitUid 提交人 UID
+     * @param formsData 表单数据
+     * @return 超星变更响应
      */
     ApiModifyResponse saveApproveData(Integer approvalFormId, Long submitUid, FormsData formsData);
 
     /**
-     * Searches approval data.
+     * 检索审批数据。
      *
-     * @param approvalFormId approval form id
-     * @param returnFields return field json
-     * @param logicSearchFilter logic search filter
-     * @param cpage page number
-     * @param pageSize page size
-     * @return Chaoxing search response
+     * @param approvalFormId 审批表单 ID
+     * @param returnFields 返回字段 JSON
+     * @param logicSearchFilter 逻辑检索条件
+     * @param cpage 页码
+     * @param pageSize 每页条数
+     * @return 超星检索响应
      */
     ApiSearchResponse searchApproveData(Integer approvalFormId,
                                         String returnFields,

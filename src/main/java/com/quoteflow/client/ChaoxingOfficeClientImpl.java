@@ -17,7 +17,7 @@ import com.quoteflow.util.ConfigurationAssert;
 import org.springframework.stereotype.Component;
 
 /**
- * Chaoxing office SDK client implementation.
+ * 超星办公 SDK 客户端实现。
  *
  * @author QuoteFlow
  */
@@ -25,27 +25,27 @@ import org.springframework.stereotype.Component;
 public class ChaoxingOfficeClientImpl implements ChaoxingOfficeClient {
 
     /**
-     * Default first page.
+     * 默认第一页。
      */
     private static final Integer DEFAULT_PAGE = 1;
 
     /**
-     * Default page size.
+     * 默认分页大小。
      */
     private static final Integer DEFAULT_PAGE_SIZE = 10;
 
     /**
-     * Whether to validate required fields on Chaoxing side.
+     * 是否在超星侧校验必填字段。
      */
     private static final Boolean CHECK_REQUIRED = Boolean.TRUE;
 
     /**
-     * Whether to filter invalid fields automatically.
+     * 是否自动过滤无效字段。
      */
     private static final Boolean AUTO_FILTER_ERROR_FIELDS = Boolean.FALSE;
 
     /**
-     * Chaoxing SDK properties.
+     * 超星 SDK 配置。
      */
     private final OfficeSdkProperties officeSdkProperties;
 

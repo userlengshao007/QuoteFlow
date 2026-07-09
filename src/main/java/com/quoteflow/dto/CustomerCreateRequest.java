@@ -4,44 +4,44 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * Customer creation request.
+ * 人员信息创建请求。
  *
  * @author QuoteFlow
  */
 public class CustomerCreateRequest {
 
     /**
-     * Customer name.
+     * 客户名称。
      */
     @NotBlank
     private String customerName;
 
     /**
-     * Customer level.
+     * 客户级别。
      */
     @NotBlank
     private String customerLevel;
 
     /**
-     * Main contact uid.
+     * 主要联系人 UID。
      */
     @NotNull
     private Long mainContactId;
 
     /**
-     * Main contact name.
+     * 主要联系人姓名。
      */
     @NotBlank
     private String mainContactName;
 
     /**
-     * Customer industry.
+     * 客户所属行业。
      */
     @NotBlank
     private String industry;
 
     /**
-     * Caller business unique id used for idempotency.
+     * 调用方用于幂等控制的业务唯一 ID。
      */
     private String uuid;
 

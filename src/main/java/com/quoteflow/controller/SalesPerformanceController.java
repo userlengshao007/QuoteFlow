@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Sales performance REST controller.
+ * 销售业绩统计 REST 控制器。
  *
  * @author QuoteFlow
  */
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SalesPerformanceController {
 
     /**
-     * Sales performance service.
+     * 销售业绩统计服务。
      */
     private final SalesPerformanceService salesPerformanceService;
 
@@ -28,10 +28,10 @@ public class SalesPerformanceController {
     }
 
     /**
-     * Creates sales performance statistics.
+     * 创建销售业绩统计。
      *
-     * @param request statistics request
-     * @return statistics response
+     * @param request 统计请求
+     * @return 统计响应
      */
     @PostMapping("/statistics")
     public ApiResponse<SalesPerformanceStatisticsVO> createStatistics(

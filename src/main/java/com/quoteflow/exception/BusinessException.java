@@ -1,14 +1,14 @@
 package com.quoteflow.exception;
 
 /**
- * Business exception used by application services.
+ * 应用服务使用的业务异常。
  *
  * @author QuoteFlow
  */
 public class BusinessException extends RuntimeException {
 
     /**
-     * Error code enum.
+     * 错误码枚举。
      */
     private final ErrorCodeEnum errorCodeEnum;
 

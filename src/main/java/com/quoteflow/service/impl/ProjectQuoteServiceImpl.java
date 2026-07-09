@@ -22,7 +22,7 @@ import com.quoteflow.util.ConfigurationAssert;
 import org.springframework.stereotype.Service;
 
 /**
- * Project quote service implementation.
+ * 项目立项与报价服务实现。
  *
  * @author QuoteFlow
  */
@@ -30,22 +30,22 @@ import org.springframework.stereotype.Service;
 public class ProjectQuoteServiceImpl implements ProjectQuoteService {
 
     /**
-     * Initial project status.
+     * 初始项目状态。
      */
     private static final String PROJECT_STATUS_INITIATED = "立项";
 
     /**
-     * Customer service.
+     * 人员信息服务。
      */
     private final CustomerService customerService;
 
     /**
-     * Chaoxing office client.
+     * 超星办公客户端。
      */
     private final ChaoxingOfficeClient chaoxingOfficeClient;
 
     /**
-     * Chaoxing SDK properties.
+     * 超星 SDK 配置。
      */
     private final OfficeSdkProperties officeSdkProperties;
 

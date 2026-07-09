@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 /**
- * Sales performance service implementation.
+ * 销售业绩统计服务实现。
  *
  * @author QuoteFlow
  */
@@ -43,38 +43,38 @@ import org.springframework.util.StringUtils;
 public class SalesPerformanceServiceImpl implements SalesPerformanceService {
 
     /**
-     * Project query return fields.
+     * 项目查询返回字段。
      */
     private static final String PROJECT_RETURN_FIELDS =
             "[{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"}]";
 
     /**
-     * Statistics id return fields.
+     * 统计编号返回字段。
      */
     private static final String STATISTICS_ID_RETURN_FIELDS = "[{\"alias\":\"%s\"}]";
 
     /**
-     * Maximum project rows used in one statistics request.
+     * 单次统计请求使用的最大项目行数。
      */
     private static final Integer MAX_PROJECT_PAGE_SIZE = 100;
 
     /**
-     * Scale for money division.
+     * 金额除法保留位数。
      */
     private static final int MONEY_SCALE = 2;
 
     /**
-     * Customer service.
+     * 人员信息服务。
      */
     private final CustomerService customerService;
 
     /**
-     * Chaoxing office client.
+     * 超星办公客户端。
      */
     private final ChaoxingOfficeClient chaoxingOfficeClient;
 
     /**
-     * Chaoxing SDK properties.
+     * 超星 SDK 配置。
      */
     private final OfficeSdkProperties officeSdkProperties;
 
@@ -252,24 +252,24 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
     }
 
     /**
-     * Internal statistics accumulation context.
+     * 内部统计累加上下文。
      *
      * @author QuoteFlow
      */
     private static class StatisticsContext {
 
         /**
-         * Responsible customer id set.
+         * 负责客户 ID 集合。
          */
         private final Set<String> customerIdSet = new HashSet<>();
 
         /**
-         * Project count.
+         * 项目数量。
          */
         private Integer projectCount = 0;
 
         /**
-         * Total quote amount.
+         * 报价总额。
          */
         private BigDecimal totalQuoteAmount = BigDecimal.ZERO;
 
@@ -294,9 +294,9 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
         }
 
         /**
-         * Calculates average project amount.
+         * 计算平均项目金额。
          *
-         * @return average project amount
+         * @return 平均项目金额
          */
         public BigDecimal calculateAverageProjectAmount() {
             if (projectCount == null || projectCount == 0) {

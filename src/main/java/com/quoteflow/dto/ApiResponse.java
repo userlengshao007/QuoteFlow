@@ -1,30 +1,30 @@
 package com.quoteflow.dto;
 
 /**
- * Unified API response.
+ * 统一接口响应。
  *
- * @param <T> response data type
+ * @param <T> 响应数据类型
  * @author QuoteFlow
  */
 public class ApiResponse<T> {
 
     /**
-     * Response code.
+     * 响应编码。
      */
     private String code;
 
     /**
-     * Whether request succeeded.
+     * 请求是否成功。
      */
     private Boolean success;
 
     /**
-     * Response message.
+     * 响应消息。
      */
     private String message;
 
     /**
-     * Response data.
+     * 响应数据。
      */
     private T data;
 

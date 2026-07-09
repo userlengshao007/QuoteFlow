@@ -1,19 +1,19 @@
 package com.quoteflow.dto;
 
 /**
- * Form submission response view object.
+ * 表单提交响应视图对象。
  *
  * @author QuoteFlow
  */
 public class FormSubmitVO {
 
     /**
-     * Chaoxing form data id.
+     * 超星表单数据 ID。
      */
     private Long formUserId;
 
     /**
-     * Repeated form data id returned by Chaoxing.
+     * 超星返回的重复表单数据 ID。
      */
     private Long repeatFormUserId;
 
