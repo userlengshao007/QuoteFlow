@@ -64,12 +64,11 @@ Content-Type: application/json
 `chaoxing.integration-test` 开关才会调用真实超星接口：
 
 ```bash
-export CHAOXING_FORMS_SIGN=
-export CHAOXING_FORMS_KEY=
-export CHAOXING_FID=
-
 mvn -Dtest=CustomerServiceIntegrationTest \
   -Dchaoxing.integration-test=true \
+  -Dchaoxing.test.forms-sign=你的表单sign \
+  -Dchaoxing.test.forms-key=你的表单key \
+  -Dchaoxing.test.fid=你的单位ID \
   -Dchaoxing.test.customer-level=战略 \
   -Dchaoxing.test.industry=信息技术 \
   -Dchaoxing.test.main-contact-id=199752933 \

@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.util.StringUtils;
 
 /**
  * 人员信息服务手动集成测试。
@@ -16,6 +19,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 @EnabledIfSystemProperty(named = "chaoxing.integration-test", matches = "true")
 class CustomerServiceIntegrationTest {
+
+    /**
+     * 表单 sign 测试参数名。
+     */
+    private static final String TEST_FORMS_SIGN = "chaoxing.test.forms-sign";
+
+    /**
+     * 表单 key 测试参数名。
+     */
+    private static final String TEST_FORMS_KEY = "chaoxing.test.forms-key";
+
+    /**
+     * 单位 ID 测试参数名。
+     */
+    private static final String TEST_FID = "chaoxing.test.fid";
 
     /**
      * 默认客户级别。
@@ -44,6 +62,18 @@ class CustomerServiceIntegrationTest {
     private CustomerService customerService;
 
     /**
+     * 注册手动集成测试使用的超星配置。
+     *
+     * @param registry 动态配置注册器
+     */
+    @DynamicPropertySource
+    static void registerChaoxingProperties(DynamicPropertyRegistry registry) {
+        registerIfPresent(registry, "chaoxing.office.forms-sign", TEST_FORMS_SIGN);
+        registerIfPresent(registry, "chaoxing.office.forms-key", TEST_FORMS_KEY);
+        registerIfPresent(registry, "chaoxing.office.fid", TEST_FID);
+    }
+
+    /**
      * 手动调用超星 SDK 新增一条人员信息表数据。
      */
     @Test
@@ -66,5 +96,12 @@ class CustomerServiceIntegrationTest {
         request.setIndustry(System.getProperty("chaoxing.test.industry", DEFAULT_INDUSTRY));
         request.setUuid("customer-integration-test-" + currentTimeMillis);
         return request;
+    }
+
+    private static void registerIfPresent(DynamicPropertyRegistry registry, String propertyName, String testName) {
+        String propertyValue = System.getProperty(testName);
+        if (StringUtils.hasText(propertyValue)) {
+            registry.add(propertyName, () -> propertyValue);
+        }
     }
 }
