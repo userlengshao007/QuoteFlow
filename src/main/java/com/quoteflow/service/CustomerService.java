@@ -3,6 +3,7 @@ package com.quoteflow.service;
 import com.quoteflow.dto.CustomerCreateRequest;
 import com.quoteflow.dto.CustomerInfoDTO;
 import com.quoteflow.dto.FormSubmitVO;
+import java.util.List;
 
 /**
  * 人员信息服务。
@@ -26,4 +27,11 @@ public interface CustomerService {
      * @return 客户信息
      */
     CustomerInfoDTO getCustomerByCustomerId(String customerId);
+
+    /**
+     * 查询人员信息表中的客户列表。
+     *
+     * @return 客户列表
+     */
+    List<CustomerInfoDTO> listCustomers();
 }

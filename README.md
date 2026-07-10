@@ -52,6 +52,7 @@ Content-Type: application/json
 
 {
   "customerName": "测试客户",
+  "creditCode": "91310000123456789X",
   "customerLevel": "战略",
   "mainContactId": 123456,
   "mainContactName": "张三",

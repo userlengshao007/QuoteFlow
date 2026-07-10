@@ -17,6 +17,12 @@ public class CustomerCreateRequest {
     private String customerName;
 
     /**
+     * 统一社会信用代码。
+     */
+    @NotBlank
+    private String creditCode;
+
+    /**
      * 客户级别。
      */
     @NotBlank
@@ -51,6 +57,14 @@ public class CustomerCreateRequest {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getCreditCode() {
+        return creditCode;
+    }
+
+    public void setCreditCode(String creditCode) {
+        this.creditCode = creditCode;
     }
 
     public String getCustomerLevel() {

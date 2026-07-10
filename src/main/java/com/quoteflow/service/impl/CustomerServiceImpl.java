@@ -23,6 +23,7 @@ import com.quoteflow.service.CustomerService;
 import com.quoteflow.util.ChaoxingResponseUtils;
 import com.quoteflow.util.ConfigurationAssert;
 import com.quoteflow.util.FormFieldValueUtils;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +63,9 @@ public class CustomerServiceImpl implements CustomerService {
         OfficeSdkProperties.Field field = officeSdkProperties.getField();
 
         FormsData formsData = new FormsData();
+        formsData.addField(new EditinputField(field.getCustomerId(), true));
         formsData.addField(new EditinputField(field.getCustomerName(), request.getCustomerName()));
+        formsData.addField(new EditinputField(field.getCreditCode(), request.getCreditCode()));
         formsData.addField(new SelectBoxField(field.getCustomerLevel(), request.getCustomerLevel()));
         formsData.addField(new ContactField(field.getMainContact(), request.getMainContactId(),
                 request.getMainContactName()));
@@ -89,6 +92,23 @@ public class CustomerServiceImpl implements CustomerService {
         }
         List<ApiFormUser> dataList = response.getData().getDataList();
         return toCustomerInfo(dataList.get(0), field);
+    }
+
+    @Override
+    public List<CustomerInfoDTO> listCustomers() {
+        Integer customerFormId = requiredCustomerFormId();
+        OfficeSdkProperties.Field field = officeSdkProperties.getField();
+
+        ApiSearchResponse response = chaoxingOfficeClient.searchFormData(
+                customerFormId, buildCustomerReturnFields(field), null, null, 1, 100);
+        List<CustomerInfoDTO> customerList = new ArrayList<>();
+        if (response.getData() == null || response.getData().getDataList() == null) {
+            return customerList;
+        }
+        for (ApiFormUser apiFormUser : response.getData().getDataList()) {
+            customerList.add(toCustomerInfo(apiFormUser, field));
+        }
+        return customerList;
     }
 
     private CustomerInfoDTO toCustomerInfo(ApiFormUser apiFormUser, OfficeSdkProperties.Field field) {

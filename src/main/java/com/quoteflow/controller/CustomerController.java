@@ -2,9 +2,12 @@ package com.quoteflow.controller;
 
 import com.quoteflow.dto.ApiResponse;
 import com.quoteflow.dto.CustomerCreateRequest;
+import com.quoteflow.dto.CustomerInfoDTO;
 import com.quoteflow.dto.FormSubmitVO;
 import com.quoteflow.service.CustomerService;
+import java.util.List;
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,5 +40,15 @@ public class CustomerController {
     @PostMapping
     public ApiResponse<FormSubmitVO> saveCustomer(@Valid @RequestBody CustomerCreateRequest request) {
         return ApiResponse.success(customerService.saveCustomer(request));
+    }
+
+    /**
+     * 查询人员信息客户列表。
+     *
+     * @return 客户列表
+     */
+    @GetMapping
+    public ApiResponse<List<CustomerInfoDTO>> listCustomers() {
+        return ApiResponse.success(customerService.listCustomers());
     }
 }

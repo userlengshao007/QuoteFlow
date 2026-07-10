@@ -11,14 +11,15 @@ import com.chaoxing.office.app.entity.forms.vo.response.ApiModifyResponse;
 import com.quoteflow.client.ChaoxingOfficeClient;
 import com.quoteflow.config.OfficeSdkProperties;
 import com.quoteflow.dto.ContactDTO;
-import com.quoteflow.dto.CustomerInfoDTO;
 import com.quoteflow.dto.ProjectCreateRequest;
 import com.quoteflow.dto.ProjectSubmitVO;
 import com.quoteflow.dto.QuoteDetailRequest;
-import com.quoteflow.service.CustomerService;
 import com.quoteflow.service.ProjectQuoteService;
 import com.quoteflow.util.ChaoxingResponseUtils;
 import com.quoteflow.util.ConfigurationAssert;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,9 +36,15 @@ public class ProjectQuoteServiceImpl implements ProjectQuoteService {
     private static final String PROJECT_STATUS_INITIATED = "立项";
 
     /**
-     * 人员信息服务。
+     * 项目编号前缀。
      */
-    private final CustomerService customerService;
+    private static final String PROJECT_CODE_PREFIX = "PROJ-";
+
+    /**
+     * 项目编号年份格式。
+     */
+    private static final DateTimeFormatter PROJECT_CODE_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy");
 
     /**
      * 超星办公客户端。
@@ -49,10 +56,8 @@ public class ProjectQuoteServiceImpl implements ProjectQuoteService {
      */
     private final OfficeSdkProperties officeSdkProperties;
 
-    public ProjectQuoteServiceImpl(CustomerService customerService,
-                                   ChaoxingOfficeClient chaoxingOfficeClient,
+    public ProjectQuoteServiceImpl(ChaoxingOfficeClient chaoxingOfficeClient,
                                    OfficeSdkProperties officeSdkProperties) {
-        this.customerService = customerService;
         this.chaoxingOfficeClient = chaoxingOfficeClient;
         this.officeSdkProperties = officeSdkProperties;
     }
@@ -61,20 +66,19 @@ public class ProjectQuoteServiceImpl implements ProjectQuoteService {
     public ProjectSubmitVO submitProjectApproval(ProjectCreateRequest request) {
         Integer approvalFormId = requiredProjectApproveFormId();
         Long submitUid = requiredSubmitUid();
-        CustomerInfoDTO customerInfo = customerService.getCustomerByCustomerId(request.getCustomerId());
-        FormsData formsData = buildProjectFormsData(request, customerInfo);
+        FormsData formsData = buildProjectFormsData(request);
 
         ApiModifyResponse response = chaoxingOfficeClient.saveApproveData(approvalFormId, submitUid, formsData);
         return ChaoxingResponseUtils.toProjectSubmitVO(response);
     }
 
-    private FormsData buildProjectFormsData(ProjectCreateRequest request, CustomerInfoDTO customerInfo) {
+    private FormsData buildProjectFormsData(ProjectCreateRequest request) {
         OfficeSdkProperties.Field field = officeSdkProperties.getField();
         FormsData formsData = new FormsData();
-        formsData.addField(new EditinputField(field.getProjectCode(), true));
-        formsData.addField(new EditinputField(field.getCustomerId(), request.getCustomerId()));
-        formsData.addField(new EditinputField(field.getCustomerName(), customerInfo.getCustomerName()));
-        formsData.addField(new SelectBoxField(field.getCustomerLevel(), customerInfo.getCustomerLevel()));
+        formsData.addField(new EditinputField(field.getProjectCode(), buildProjectCode()));
+        formsData.addField(new SelectBoxField(field.getCustomerId(), request.getCustomerId()));
+        formsData.addField(new EditinputField(field.getCustomerName(), true));
+        formsData.addField(new SelectBoxField(field.getCustomerLevel(), true));
         formsData.addField(new DateinputField(field.getProjectDate(), request.getProjectDate()));
         formsData.addField(new DateinputField(field.getExpectedFinishDate(), request.getExpectedFinishDate()));
         formsData.addField(buildProjectMembersField(field.getProjectMembers(), request));
@@ -104,6 +108,11 @@ public class ProjectQuoteServiceImpl implements ProjectQuoteService {
             detailField.addSubField(rowData);
         }
         return detailField;
+    }
+
+    private String buildProjectCode() {
+        return PROJECT_CODE_PREFIX + PROJECT_CODE_FORMATTER.format(LocalDateTime.now())
+                + "-" + UUID.randomUUID();
     }
 
     private Integer requiredProjectApproveFormId() {

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuoteFlow 业务录入</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="page-shell">
+    <section class="workspace">
+        <header class="workspace-header">
+            <div>
+                <p class="eyebrow">QuoteFlow</p>
+                <h1>业务数据录入</h1>
+            </div>
+            <span class="status-pill">表单与审批</span>
+        </header>
+
+        <section class="business-section">
+            <header class="section-header">
+                <div>
+                    <p class="eyebrow">需求 1</p>
+                    <h2>人员信息新增</h2>
+                </div>
+            </header>
+
+            <form id="customerForm" class="form-panel" novalidate>
+                <div class="field-grid">
+                    <label class="field">
+                        <span>客户名称</span>
+                        <input id="customerName" name="customerName" type="text" placeholder="例如：测试客户" required>
+                    </label>
+
+                    <label class="field">
+                        <span>统一信用代码</span>
+                        <input id="creditCode" name="creditCode" type="text" maxlength="18"
+                               placeholder="例如：91310000123456789X" required>
+                    </label>
+
+                    <label class="field">
+                        <span>客户级别</span>
+                        <select id="customerLevel" name="customerLevel" required>
+                            <option value="战略">战略</option>
+                            <option value="重点">重点</option>
+                            <option value="普通">普通</option>
+                            <option value="潜在">潜在</option>
+                        </select>
+                    </label>
+
+                    <label class="field">
+                        <span>主要联系人 UID</span>
+                        <input id="mainContactId" name="mainContactId" type="number" inputmode="numeric"
+                               value="199752933" required>
+                    </label>
+
+                    <label class="field">
+                        <span>主要联系人姓名</span>
+                        <input id="mainContactName" name="mainContactName" type="text" value="章宇杰" required>
+                    </label>
+
+                    <label class="field">
+                        <span>所属行业</span>
+                        <select id="industry" name="industry" required>
+                            <option value="信息技术">信息技术</option>
+                            <option value="教育培训">教育培训</option>
+                            <option value="医疗健康">医疗健康</option>
+                            <option value="制造业">制造业</option>
+                            <option value="金融服务">金融服务</option>
+                            <option value="政企单位">政企单位</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button id="submitCustomerButton" type="submit">
+                        <span class="button-icon" aria-hidden="true">+</span>
+                        <span>提交人员信息</span>
+                    </button>
+                    <button id="resetCustomerButton" class="secondary-button" type="button">
+                        <span class="button-icon" aria-hidden="true">↺</span>
+                        <span>重置</span>
+                    </button>
+                </div>
+            </form>
+
+            <section class="result-panel" aria-live="polite">
+                <h3>提交结果</h3>
+                <pre id="customerResultText">等待提交</pre>
+            </section>
+        </section>
+
+        <section class="business-section">
+            <header class="section-header">
+                <div>
+                    <p class="eyebrow">需求 2</p>
+                    <h2>项目立项与报价</h2>
+                </div>
+            </header>
+
+            <form id="projectForm" class="form-panel" novalidate>
+                <div class="field-grid">
+                    <label class="field">
+                        <span>客户</span>
+                        <select id="projectCustomerId" name="customerId" required>
+                            <option value="">加载客户列表中...</option>
+                        </select>
+                    </label>
+
+                    <label class="field">
+                        <span>立项日期</span>
+                        <input id="projectDate" name="projectDate" type="datetime-local" required>
+                    </label>
+
+                    <label class="field">
+                        <span>预计完成日期</span>
+                        <input id="expectedFinishDate" name="expectedFinishDate" type="datetime-local" required>
+                    </label>
+                </div>
+
+                <div class="table-block">
+                    <div class="table-title">
+                        <h3>项目成员</h3>
+                        <button id="addMemberButton" class="secondary-button small-button" type="button">
+                            <span class="button-icon" aria-hidden="true">+</span>
+                            <span>添加成员</span>
+                        </button>
+                    </div>
+                    <div id="memberRows" class="row-list"></div>
+                </div>
+
+                <div class="table-block">
+                    <div class="table-title">
+                        <h3>报价明细</h3>
+                        <button id="addQuoteButton" class="secondary-button small-button" type="button">
+                            <span class="button-icon" aria-hidden="true">+</span>
+                            <span>添加明细</span>
+                        </button>
+                    </div>
+                    <div id="quoteRows" class="row-list"></div>
+                </div>
+
+                <div class="summary-row">
+                    <span>预估报价总额</span>
+                    <strong id="quoteTotalText">0.00</strong>
+                </div>
+
+                <div class="actions">
+                    <button id="submitProjectButton" type="submit">
+                        <span class="button-icon" aria-hidden="true">✓</span>
+                        <span>提交项目审批</span>
+                    </button>
+                    <button id="reloadCustomerButton" class="secondary-button" type="button">
+                        <span class="button-icon" aria-hidden="true">↻</span>
+                        <span>刷新客户</span>
+                    </button>
+                    <button id="resetProjectButton" class="secondary-button" type="button">
+                        <span class="button-icon" aria-hidden="true">↺</span>
+                        <span>重置</span>
+                    </button>
+                </div>
+            </form>
+
+            <section class="result-panel" aria-live="polite">
+                <h3>提交结果</h3>
+                <pre id="projectResultText">等待提交</pre>
+            </section>
+        </section>
+    </section>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
