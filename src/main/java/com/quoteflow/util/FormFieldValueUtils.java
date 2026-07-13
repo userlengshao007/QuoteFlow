@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * 从超星表单字段中提取值的工具。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public final class FormFieldValueUtils {
 

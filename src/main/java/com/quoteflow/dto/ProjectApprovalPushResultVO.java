@@ -3,7 +3,7 @@ package com.quoteflow.dto;
 /**
  * 项目审批推送处理结果。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class ProjectApprovalPushResultVO {
 

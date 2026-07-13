@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 /**
  * 项目立项与报价服务实现。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @Service
 public class ProjectQuoteServiceImpl implements ProjectQuoteService {

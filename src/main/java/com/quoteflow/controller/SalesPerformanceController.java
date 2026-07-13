@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 销售业绩统计 REST 控制器。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @RestController
 @RequestMapping("/api/sales-performance")

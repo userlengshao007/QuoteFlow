@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 超星 SDK 响应工具。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public final class ChaoxingResponseUtils {
 

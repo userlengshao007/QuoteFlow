@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * QuoteFlow 应用启动类。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @SpringBootApplication
 public class QuoteFlowApplication {

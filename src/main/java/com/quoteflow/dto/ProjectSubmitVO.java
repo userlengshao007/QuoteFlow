@@ -3,7 +3,7 @@ package com.quoteflow.dto;
 /**
  * 项目审批提交响应视图对象。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class ProjectSubmitVO {
 

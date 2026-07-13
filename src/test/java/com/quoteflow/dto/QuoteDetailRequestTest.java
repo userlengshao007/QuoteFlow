@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 /**
  * 单元测试： {@link QuoteDetailRequest}.
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 class QuoteDetailRequestTest {
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 项目立项与报价 REST 控制器。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @RestController
 @RequestMapping("/api/projects")

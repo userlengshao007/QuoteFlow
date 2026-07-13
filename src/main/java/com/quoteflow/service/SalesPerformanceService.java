@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 销售业绩统计服务。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public interface SalesPerformanceService {
 

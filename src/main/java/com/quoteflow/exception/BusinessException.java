@@ -3,7 +3,7 @@ package com.quoteflow.exception;
 /**
  * 应用服务使用的业务异常。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class BusinessException extends RuntimeException {
 

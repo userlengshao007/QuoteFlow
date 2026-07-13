@@ -46,7 +46,7 @@ import org.springframework.util.StringUtils;
 /**
  * 销售业绩统计服务实现。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @Service
 public class SalesPerformanceServiceImpl implements SalesPerformanceService {
@@ -443,7 +443,7 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
     /**
      * 内部统计累加上下文。
      *
-     * @author QuoteFlow
+     * @author zhangyujie
      */
     private static class StatisticsContext {
 

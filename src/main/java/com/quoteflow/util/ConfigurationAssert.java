@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 /**
  * 配置校验工具。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public final class ConfigurationAssert {
 

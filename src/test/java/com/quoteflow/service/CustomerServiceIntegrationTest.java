@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 /**
  * 人员信息服务手动集成测试。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @SpringBootTest
 class CustomerServiceIntegrationTest {

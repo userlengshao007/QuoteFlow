@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * REST 接口全局异常处理器。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {

@@ -4,7 +4,7 @@ package com.quoteflow.dto;
  * 统一接口响应。
  *
  * @param <T> 响应数据类型
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class ApiResponse<T> {
 

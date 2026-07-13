@@ -8,7 +8,7 @@ import com.chaoxing.office.app.entity.forms.vo.response.ApiSearchResponse;
 /**
  * 超星办公 SDK 客户端门面。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public interface ChaoxingOfficeClient {
 

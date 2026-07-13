@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * 超星办公 SDK 与表单映射配置。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @ConfigurationProperties(prefix = "chaoxing.office")
 public class OfficeSdkProperties {
@@ -156,7 +156,7 @@ public class OfficeSdkProperties {
     /**
      * 超星表单 ID 映射。
      *
-     * @author QuoteFlow
+     * @author zhangyujie
      */
     public static class Form {
 
@@ -216,7 +216,7 @@ public class OfficeSdkProperties {
     /**
      * 超星字段别名映射。
      *
-     * @author QuoteFlow
+     * @author zhangyujie
      */
     public static class Field {
 

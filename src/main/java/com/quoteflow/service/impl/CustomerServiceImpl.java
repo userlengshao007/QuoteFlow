@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 /**
  * 人员信息服务实现。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @Service
 public class CustomerServiceImpl implements CustomerService {

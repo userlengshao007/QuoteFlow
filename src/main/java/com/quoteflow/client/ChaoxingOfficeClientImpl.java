@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 /**
  * 超星办公 SDK 客户端实现。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @Component
 public class ChaoxingOfficeClientImpl implements ChaoxingOfficeClient {

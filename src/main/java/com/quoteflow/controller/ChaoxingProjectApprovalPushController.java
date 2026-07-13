@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 超星项目审批数据推送控制器。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @RestController
 @RequestMapping("/api/chaoxing/project-approval")

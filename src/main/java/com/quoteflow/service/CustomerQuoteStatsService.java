@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 客户报价统计服务。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public interface CustomerQuoteStatsService {
 

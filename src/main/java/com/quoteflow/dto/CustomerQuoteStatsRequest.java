@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 /**
  * 客户报价统计请求。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class CustomerQuoteStatsRequest {
 

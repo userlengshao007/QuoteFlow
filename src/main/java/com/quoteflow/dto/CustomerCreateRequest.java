@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 /**
  * 人员信息创建请求。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class CustomerCreateRequest {
 

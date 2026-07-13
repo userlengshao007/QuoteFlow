@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * 客户报价统计明细。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class CustomerQuoteStatsItemVO {
 

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 根据 Spring 配置初始化超星办公 SDK 静态配置。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 @Configuration
 @EnableConfigurationProperties(OfficeSdkProperties.class)

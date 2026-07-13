@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 /**
  * 联系人传输对象。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class ContactDTO {
 

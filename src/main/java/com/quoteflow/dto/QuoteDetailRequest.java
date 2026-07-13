@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 /**
  * 报价明细请求。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class QuoteDetailRequest {
 

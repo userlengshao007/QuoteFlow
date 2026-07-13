@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 人员信息服务。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public interface CustomerService {
 

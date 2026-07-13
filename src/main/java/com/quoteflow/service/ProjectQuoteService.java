@@ -6,7 +6,7 @@ import com.quoteflow.dto.ProjectSubmitVO;
 /**
  * 项目立项与报价服务。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public interface ProjectQuoteService {
 

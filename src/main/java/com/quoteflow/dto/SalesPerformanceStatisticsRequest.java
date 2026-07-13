@@ -3,7 +3,7 @@ package com.quoteflow.dto;
 /**
  * 销售业绩统计请求。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class SalesPerformanceStatisticsRequest {
 

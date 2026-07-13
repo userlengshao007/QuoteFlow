@@ -3,7 +3,7 @@ package com.quoteflow.dto;
 /**
  * 客户信息传输对象。
  *
- * @author QuoteFlow
+ * @author zhangyujie
  */
 public class CustomerInfoDTO {
 
