@@ -41,6 +41,11 @@ public class OfficeSdkProperties {
     private String approveKey;
 
     /**
+     * 顶部按钮追加加密串 key。
+     */
+    private String topButtonKey;
+
+    /**
      * 超星 SDK 必填的单位 ID。
      */
     private Integer fid;
@@ -106,6 +111,14 @@ public class OfficeSdkProperties {
 
     public void setApproveKey(String approveKey) {
         this.approveKey = approveKey;
+    }
+
+    public String getTopButtonKey() {
+        return topButtonKey;
+    }
+
+    public void setTopButtonKey(String topButtonKey) {
+        this.topButtonKey = topButtonKey;
     }
 
     public Integer getFid() {

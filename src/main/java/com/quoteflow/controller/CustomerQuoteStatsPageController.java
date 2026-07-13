@@ -1,14 +1,21 @@
 package com.quoteflow.controller;
 
+import com.quoteflow.config.OfficeSdkProperties;
 import com.quoteflow.dto.CustomerQuoteStatsItemVO;
 import com.quoteflow.exception.BusinessException;
 import com.quoteflow.exception.ErrorCodeEnum;
 import com.quoteflow.service.CustomerQuoteStatsService;
+import com.quoteflow.util.ConfigurationAssert;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import org.springframework.http.MediaType;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +33,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerQuoteStatsPageController {
 
     /**
+     * 加密串参数名。
+     */
+    private static final String ENC_PARAM = "enc";
+
+    /**
+     * MD5 算法名称。
+     */
+    private static final String MD5_ALGORITHM = "MD5";
+
+    /**
+     * 小写十六进制字符。
+     */
+    private static final char[] LOWER_HEX_CHARS = "0123456789abcdef".toCharArray();
+
+    /**
      * 客户报价统计服务。
      */
     private final CustomerQuoteStatsService customerQuoteStatsService;
 
-    public CustomerQuoteStatsPageController(CustomerQuoteStatsService customerQuoteStatsService) {
+    /**
+     * 超星 SDK 配置。
+     */
+    private final OfficeSdkProperties officeSdkProperties;
+
+    public CustomerQuoteStatsPageController(CustomerQuoteStatsService customerQuoteStatsService,
+                                           OfficeSdkProperties officeSdkProperties) {
         this.customerQuoteStatsService = customerQuoteStatsService;
+        this.officeSdkProperties = officeSdkProperties;
     }
 
     /**
@@ -41,15 +70,92 @@ public class CustomerQuoteStatsPageController {
      * @return 统计结果 HTML
      */
     @GetMapping(value = "/top", produces = MediaType.TEXT_HTML_VALUE)
-    public String summarizeTopButton(@RequestParam Map<String, String> requestParamMap) {
-        Long uid = parseRequiredUid(requestParamMap.get("uid"));
-        String queryId = requestParamMap.get("queryId");
+    public String summarizeTopButton(@RequestParam MultiValueMap<String, String> requestParamMap) {
+        validateTopButtonEnc(requestParamMap);
+
+        Map<String, String> singleValueParamMap = toSingleValueMap(requestParamMap);
+        Long uid = parseRequiredUid(singleValueParamMap.get("uid"));
+        String queryId = singleValueParamMap.get("queryId");
         if (!StringUtils.hasText(queryId)) {
             throw new BusinessException(ErrorCodeEnum.INVALID_PARAMETER, "queryId 不能为空");
         }
 
         List<CustomerQuoteStatsItemVO> itemList = customerQuoteStatsService.summarizeTopSelected(uid, queryId);
-        return renderStatsPage(itemList, requestParamMap);
+        return renderStatsPage(itemList, singleValueParamMap);
+    }
+
+    private void validateTopButtonEnc(MultiValueMap<String, String> requestParamMap) {
+        String actualEnc = getFirstParamValue(requestParamMap, ENC_PARAM);
+        if (!StringUtils.hasText(actualEnc)) {
+            throw new BusinessException(ErrorCodeEnum.INVALID_PARAMETER, "enc 不能为空");
+        }
+
+        String topButtonKey = ConfigurationAssert.requireNonBlank(
+                officeSdkProperties.getTopButtonKey(),
+                "chaoxing.office.top-button-key"
+        );
+        String expectedEnc = buildTopButtonEnc(requestParamMap, topButtonKey);
+        if (!expectedEnc.equalsIgnoreCase(actualEnc)) {
+            throw new BusinessException(ErrorCodeEnum.INVALID_PARAMETER, "enc 校验失败");
+        }
+    }
+
+    private String buildTopButtonEnc(MultiValueMap<String, String> requestParamMap, String topButtonKey) {
+        Map<String, String> sortedParamMap = new TreeMap<>();
+        for (Map.Entry<String, List<String>> entry : requestParamMap.entrySet()) {
+            String paramName = entry.getKey();
+            if (ENC_PARAM.equals(paramName)) {
+                continue;
+            }
+            sortedParamMap.put(paramName, getFirstParamValue(requestParamMap, paramName));
+        }
+
+        StringBuilder sourceBuilder = new StringBuilder();
+        for (Map.Entry<String, String> entry : sortedParamMap.entrySet()) {
+            sourceBuilder.append('[')
+                    .append(entry.getKey())
+                    .append('=')
+                    .append(entry.getValue() == null ? "" : entry.getValue())
+                    .append(']');
+        }
+        sourceBuilder.append('[').append(topButtonKey).append(']');
+        return md5Hex(sourceBuilder.toString());
+    }
+
+    private Map<String, String> toSingleValueMap(MultiValueMap<String, String> requestParamMap) {
+        Map<String, String> singleValueParamMap = new TreeMap<>();
+        for (String paramName : requestParamMap.keySet()) {
+            singleValueParamMap.put(paramName, getFirstParamValue(requestParamMap, paramName));
+        }
+        return singleValueParamMap;
+    }
+
+    private String getFirstParamValue(MultiValueMap<String, String> requestParamMap, String paramName) {
+        List<String> valueList = requestParamMap.get(paramName);
+        if (valueList == null || valueList.isEmpty()) {
+            return null;
+        }
+        return valueList.get(0);
+    }
+
+    private String md5Hex(String source) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance(MD5_ALGORITHM);
+            byte[] digestBytes = messageDigest.digest(source.getBytes(StandardCharsets.UTF_8));
+            return toLowerHex(digestBytes);
+        } catch (NoSuchAlgorithmException exception) {
+            throw new BusinessException(ErrorCodeEnum.CHAOXING_SDK_ERROR, "MD5 算法不可用", exception);
+        }
+    }
+
+    private String toLowerHex(byte[] digestBytes) {
+        char[] chars = new char[digestBytes.length * 2];
+        for (int i = 0; i < digestBytes.length; i++) {
+            int value = digestBytes[i] & 0xff;
+            chars[i * 2] = LOWER_HEX_CHARS[value >>> 4];
+            chars[i * 2 + 1] = LOWER_HEX_CHARS[value & 0x0f];
+        }
+        return new String(chars);
     }
 
     private Long parseRequiredUid(String uidText) {
