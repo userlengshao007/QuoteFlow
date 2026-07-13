@@ -6,7 +6,7 @@ import com.chaoxing.office.app.entity.forms.dto.data.field.EditinputField;
 import com.chaoxing.office.app.entity.forms.dto.data.field.SelectBoxField;
 import com.chaoxing.office.app.entity.forms.dto.search.field.BaseSearchFilter.SearchExpressTypeEnum;
 import com.chaoxing.office.app.entity.forms.dto.search.field.BaseSearchFilter.SearchModelTypeEnum;
-import com.chaoxing.office.app.entity.forms.dto.search.field.EditinputSearchFilter;
+import com.chaoxing.office.app.entity.forms.dto.search.field.AutonumberSearchFilter;
 import com.chaoxing.office.app.entity.forms.dto.search.field.LogicSearchFilter;
 import com.chaoxing.office.app.entity.forms.vo.data.ApiFormUser;
 import com.chaoxing.office.app.entity.forms.vo.response.ApiModifyResponse;
@@ -63,7 +63,6 @@ public class CustomerServiceImpl implements CustomerService {
         OfficeSdkProperties.Field field = officeSdkProperties.getField();
 
         FormsData formsData = new FormsData();
-        formsData.addField(new EditinputField(field.getCustomerId(), true));
         formsData.addField(new EditinputField(field.getCustomerName(), request.getCustomerName()));
         formsData.addField(new EditinputField(field.getCreditCode(), request.getCreditCode()));
         formsData.addField(new SelectBoxField(field.getCustomerLevel(), request.getCustomerLevel()));
@@ -82,7 +81,7 @@ public class CustomerServiceImpl implements CustomerService {
         OfficeSdkProperties.Field field = officeSdkProperties.getField();
 
         LogicSearchFilter filter = new LogicSearchFilter(SearchModelTypeEnum.AND);
-        filter.addFilter(new EditinputSearchFilter(field.getCustomerId(), SearchExpressTypeEnum.EQUALS, customerId));
+        filter.addFilter(new AutonumberSearchFilter(field.getCustomerId(), SearchExpressTypeEnum.EQUALS, customerId));
 
         ApiSearchResponse response = chaoxingOfficeClient.searchFormData(
                 customerFormId, buildCustomerReturnFields(field), filter, null, 1, 10);
