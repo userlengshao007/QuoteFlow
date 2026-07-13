@@ -175,6 +175,11 @@ public class OfficeSdkProperties {
          */
         private Integer salesStatisticsFormId;
 
+        /**
+         * 销售业绩明细表 ID。
+         */
+        private Integer salesPerformanceFormId;
+
         public Integer getCustomerFormId() {
             return customerFormId;
         }
@@ -197,6 +202,14 @@ public class OfficeSdkProperties {
 
         public void setSalesStatisticsFormId(Integer salesStatisticsFormId) {
             this.salesStatisticsFormId = salesStatisticsFormId;
+        }
+
+        public Integer getSalesPerformanceFormId() {
+            return salesPerformanceFormId;
+        }
+
+        public void setSalesPerformanceFormId(Integer salesPerformanceFormId) {
+            this.salesPerformanceFormId = salesPerformanceFormId;
         }
     }
 

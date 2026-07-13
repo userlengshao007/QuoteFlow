@@ -179,6 +179,26 @@ public class ChaoxingOfficeClientImpl implements ChaoxingOfficeClient {
     }
 
     @Override
+    public ApiSearchResponse getApproveDataByFormUserIds(Integer approvalFormId,
+                                                         String formUserIds,
+                                                         String returnFields) {
+        validateApproveCredential();
+        Integer fid = requiredFid();
+        try {
+            ApiSearchResponse response = OfficeApproveApiInvokeService.getApproveUserDataListByFormId(
+                    fid,
+                    approvalFormId,
+                    formUserIds,
+                    returnFields
+            );
+            assertSuccess(response);
+            return response;
+        } catch (OfficeApiException exception) {
+            throw new BusinessException(ErrorCodeEnum.CHAOXING_SDK_ERROR, "根据审批数据 ID 检索审批数据失败", exception);
+        }
+    }
+
+    @Override
     public ApiSearchResponse searchApproveTopDataByQueryId(Long uid,
                                                            String queryId,
                                                            String returnFields,

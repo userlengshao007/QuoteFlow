@@ -68,6 +68,16 @@ public interface ChaoxingOfficeClient {
                                         Integer pageSize);
 
     /**
+     * 根据审批数据 ID 检索审批数据。
+     *
+     * @param approvalFormId 审批表单 ID
+     * @param formUserIds 审批数据 ID 列表，多个用英文逗号分隔
+     * @param returnFields 返回字段 JSON
+     * @return 超星检索响应
+     */
+    ApiSearchResponse getApproveDataByFormUserIds(Integer approvalFormId, String formUserIds, String returnFields);
+
+    /**
      * 根据顶部按钮 queryId 检索审批选中数据。
      *
      * @param uid 点击顶部按钮的用户 UID
