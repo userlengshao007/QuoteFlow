@@ -66,4 +66,20 @@ public interface ChaoxingOfficeClient {
                                         LogicSearchFilter logicSearchFilter,
                                         Integer cpage,
                                         Integer pageSize);
+
+    /**
+     * 根据顶部按钮 queryId 检索审批选中数据。
+     *
+     * @param uid 点击顶部按钮的用户 UID
+     * @param queryId 顶部按钮回传的查询条件 ID
+     * @param returnFields 返回字段 JSON
+     * @param limit 每次查询数量
+     * @param sortValues 游标
+     * @return 超星检索响应
+     */
+    ApiSearchResponse searchApproveTopDataByQueryId(Long uid,
+                                                    String queryId,
+                                                    String returnFields,
+                                                    Integer limit,
+                                                    String sortValues);
 }

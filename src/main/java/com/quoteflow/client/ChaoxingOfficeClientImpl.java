@@ -178,6 +178,30 @@ public class ChaoxingOfficeClientImpl implements ChaoxingOfficeClient {
         }
     }
 
+    @Override
+    public ApiSearchResponse searchApproveTopDataByQueryId(Long uid,
+                                                           String queryId,
+                                                           String returnFields,
+                                                           Integer limit,
+                                                           String sortValues) {
+        validateApproveCredential();
+        Integer fid = requiredFid();
+        try {
+            ApiSearchResponse response = OfficeApproveApiInvokeService.approveUserTopSearchListByQueryId(
+                    fid,
+                    uid,
+                    queryId,
+                    returnFields,
+                    limit == null ? DEFAULT_PAGE_SIZE : limit,
+                    sortValues
+            );
+            assertSuccess(response);
+            return response;
+        } catch (OfficeApiException exception) {
+            throw new BusinessException(ErrorCodeEnum.CHAOXING_SDK_ERROR, "获取顶部按钮选中审批数据失败", exception);
+        }
+    }
+
     private Integer requiredFid() {
         return ConfigurationAssert.requireNonNull(officeSdkProperties.getFid(), "chaoxing.office.fid");
     }

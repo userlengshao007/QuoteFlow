@@ -18,4 +18,13 @@ public interface CustomerQuoteStatsService {
      * @return 统计明细列表
      */
     List<CustomerQuoteStatsItemVO> summarizeByCustomer(CustomerQuoteStatsRequest request);
+
+    /**
+     * 按顶部按钮选中的项目数据汇总报价总额。
+     *
+     * @param uid 点击顶部按钮的用户 UID
+     * @param queryId 顶部按钮回传的查询条件 ID
+     * @return 统计明细列表
+     */
+    List<CustomerQuoteStatsItemVO> summarizeTopSelected(Long uid, String queryId);
 }

@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * 客户报价统计服务实现。
@@ -66,6 +68,47 @@ public class CustomerQuoteStatsServiceImpl implements CustomerQuoteStatsService 
         List<ApiFormUser> selectedProjects = response.getData() == null ? new ArrayList<>()
                 : response.getData().getDataList();
         return groupByCustomer(selectedProjects, field);
+    }
+
+    @Override
+    public List<CustomerQuoteStatsItemVO> summarizeTopSelected(Long uid, String queryId) {
+        ConfigurationAssert.requireNonNull(uid, "uid");
+        ConfigurationAssert.requireNonBlank(queryId, "queryId");
+
+        OfficeSdkProperties.Field field = officeSdkProperties.getField();
+        List<ApiFormUser> selectedProjects = listTopSelectedProjects(uid, queryId, buildProjectReturnFields(field));
+        return groupByCustomer(selectedProjects, field);
+    }
+
+    private List<ApiFormUser> listTopSelectedProjects(Long uid, String queryId, String returnFields) {
+        List<ApiFormUser> selectedProjects = new ArrayList<>();
+        String sortValues = null;
+        while (true) {
+            ApiSearchResponse response = chaoxingOfficeClient.searchApproveTopDataByQueryId(
+                    uid,
+                    queryId,
+                    returnFields,
+                    MAX_SELECTED_SIZE,
+                    sortValues
+            );
+            if (response.getData() == null) {
+                return selectedProjects;
+            }
+
+            List<ApiFormUser> dataList = response.getData().getDataList();
+            if (dataList != null) {
+                selectedProjects.addAll(dataList);
+            }
+
+            String nextSortValues = response.getData().getSortValues();
+            Integer total = response.getData().getTotal();
+            if (!StringUtils.hasText(nextSortValues)
+                    || Objects.equals(sortValues, nextSortValues)
+                    || (total != null && selectedProjects.size() >= total)) {
+                return selectedProjects;
+            }
+            sortValues = nextSortValues;
+        }
     }
 
     private List<CustomerQuoteStatsItemVO> groupByCustomer(List<ApiFormUser> selectedProjects,
