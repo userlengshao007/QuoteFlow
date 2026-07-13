@@ -28,9 +28,12 @@ import com.quoteflow.util.DateTimeUtils;
 import com.quoteflow.util.FormFieldValueUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -49,11 +52,6 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
             "[{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"}]";
 
     /**
-     * 统计编号返回字段。
-     */
-    private static final String STATISTICS_ID_RETURN_FIELDS = "[{\"alias\":\"%s\"}]";
-
-    /**
      * 单次统计请求使用的最大项目行数。
      */
     private static final Integer MAX_PROJECT_PAGE_SIZE = 100;
@@ -62,6 +60,17 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
      * 金额除法保留位数。
      */
     private static final int MONEY_SCALE = 2;
+
+    /**
+     * 统计编号前缀。
+     */
+    private static final String STATISTICS_ID_PREFIX = "PERF-";
+
+    /**
+     * 统计编号年份格式。
+     */
+    private static final DateTimeFormatter STATISTICS_ID_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy");
 
     /**
      * 人员信息服务。
@@ -99,8 +108,8 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
         );
 
         StatisticsContext context = calculateStatistics(projectResponse, request, field);
-        FormSubmitVO formSubmitVO = saveStatisticsForm(request, context, field);
-        String statisticsId = queryStatisticsId(formSubmitVO.getFormUserId(), field);
+        String statisticsId = buildStatisticsId();
+        FormSubmitVO formSubmitVO = saveStatisticsForm(request, context, field, statisticsId);
         return toStatisticsVO(formSubmitVO, statisticsId, context);
     }
 
@@ -169,11 +178,12 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
 
     private FormSubmitVO saveStatisticsForm(SalesPerformanceStatisticsRequest request,
                                             StatisticsContext context,
-                                            OfficeSdkProperties.Field field) {
+                                            OfficeSdkProperties.Field field,
+                                            String statisticsId) {
         Integer salesStatisticsFormId = requiredSalesStatisticsFormId();
         Long submitUid = requiredSubmitUid();
         FormsData formsData = new FormsData();
-        formsData.addField(new EditinputField(field.getStatisticsId(), true));
+        formsData.addField(new EditinputField(field.getStatisticsId(), statisticsId));
         formsData.addField(new DateinputField(field.getStatisticsDate(), System.currentTimeMillis()));
         formsData.addField(new NumberinputField(field.getResponsibleCustomers(),
                 Double.valueOf(context.getCustomerIdSet().size())));
@@ -187,25 +197,6 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
         ApiModifyResponse response = chaoxingOfficeClient.saveFormData(salesStatisticsFormId, submitUid, null,
                 formsData);
         return ChaoxingResponseUtils.toFormSubmitVO(response);
-    }
-
-    private String queryStatisticsId(Long formUserId, OfficeSdkProperties.Field field) {
-        if (formUserId == null) {
-            return null;
-        }
-        ApiSearchResponse response = chaoxingOfficeClient.searchFormData(
-                requiredSalesStatisticsFormId(),
-                String.format(STATISTICS_ID_RETURN_FIELDS, field.getStatisticsId()),
-                null,
-                String.valueOf(formUserId),
-                1,
-                1
-        );
-        if (response.getData() == null || response.getData().getDataList() == null
-                || response.getData().getDataList().isEmpty()) {
-            return null;
-        }
-        return FormFieldValueUtils.getFirstText(response.getData().getDataList().get(0), field.getStatisticsId());
     }
 
     private SalesPerformanceStatisticsVO toStatisticsVO(FormSubmitVO formSubmitVO,
@@ -231,6 +222,11 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
                 + ", projectDateStart=" + request.getProjectDateStart()
                 + ", projectDateEnd=" + request.getProjectDateEnd()
                 + ", salesName=" + request.getSalesName();
+    }
+
+    private String buildStatisticsId() {
+        return STATISTICS_ID_PREFIX + STATISTICS_ID_FORMATTER.format(LocalDateTime.now())
+                + "-" + UUID.randomUUID();
     }
 
     private Integer requiredProjectApproveFormId() {
