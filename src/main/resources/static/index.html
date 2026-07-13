@@ -167,6 +167,83 @@
                 <pre id="projectResultText">等待提交</pre>
             </section>
         </section>
+
+        <section class="business-section">
+            <header class="section-header">
+                <div>
+                    <p class="eyebrow">需求 3</p>
+                    <h2>销售业绩统计</h2>
+                </div>
+            </header>
+
+            <form id="statisticsForm" class="form-panel" novalidate>
+                <div class="field-grid">
+                    <label class="field">
+                        <span>客户级别</span>
+                        <select id="statisticsCustomerLevel" name="customerLevel">
+                            <option value="">全部客户级别</option>
+                            <option value="战略">战略</option>
+                            <option value="重点">重点</option>
+                            <option value="普通">普通</option>
+                            <option value="潜在">潜在</option>
+                        </select>
+                    </label>
+
+                    <label class="field">
+                        <span>销售姓名</span>
+                        <input id="salesName" name="salesName" type="text" placeholder="按主要联系人姓名模糊筛选">
+                    </label>
+
+                    <label class="field">
+                        <span>立项日期开始</span>
+                        <input id="projectDateStart" name="projectDateStart" type="date">
+                    </label>
+
+                    <label class="field">
+                        <span>立项日期结束</span>
+                        <input id="projectDateEnd" name="projectDateEnd" type="date">
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button id="submitStatisticsButton" type="submit">
+                        <span class="button-icon" aria-hidden="true">Σ</span>
+                        <span>生成销售统计</span>
+                    </button>
+                    <button id="resetStatisticsButton" class="secondary-button" type="button">
+                        <span class="button-icon" aria-hidden="true">↺</span>
+                        <span>重置</span>
+                    </button>
+                </div>
+            </form>
+
+            <section class="result-panel" aria-live="polite">
+                <h3>统计结果</h3>
+                <div id="statisticsCards" class="metric-grid" hidden>
+                    <div class="metric-item">
+                        <span>统计编号</span>
+                        <strong id="statisticsIdText">-</strong>
+                    </div>
+                    <div class="metric-item">
+                        <span>负责客户数</span>
+                        <strong id="responsibleCustomersText">0</strong>
+                    </div>
+                    <div class="metric-item">
+                        <span>项目数量</span>
+                        <strong id="projectCountText">0</strong>
+                    </div>
+                    <div class="metric-item">
+                        <span>报价总额</span>
+                        <strong id="totalQuoteAmountText">0.00</strong>
+                    </div>
+                    <div class="metric-item">
+                        <span>平均项目金额</span>
+                        <strong id="averageProjectAmountText">0.00</strong>
+                    </div>
+                </div>
+                <pre id="statisticsResultText">等待统计</pre>
+            </section>
+        </section>
     </section>
 </main>
 <script src="/app.js"></script>

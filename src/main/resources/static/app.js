@@ -15,6 +15,16 @@
     var memberRows = document.getElementById("memberRows");
     var quoteRows = document.getElementById("quoteRows");
     var quoteTotalText = document.getElementById("quoteTotalText");
+    var statisticsForm = document.getElementById("statisticsForm");
+    var submitStatisticsButton = document.getElementById("submitStatisticsButton");
+    var resetStatisticsButton = document.getElementById("resetStatisticsButton");
+    var statisticsResultText = document.getElementById("statisticsResultText");
+    var statisticsCards = document.getElementById("statisticsCards");
+    var statisticsIdText = document.getElementById("statisticsIdText");
+    var responsibleCustomersText = document.getElementById("responsibleCustomersText");
+    var projectCountText = document.getElementById("projectCountText");
+    var totalQuoteAmountText = document.getElementById("totalQuoteAmountText");
+    var averageProjectAmountText = document.getElementById("averageProjectAmountText");
 
     function trimValue(formData, fieldName) {
         return String(formData.get(fieldName) || "").trim();
@@ -308,6 +318,52 @@
         }, null, 2);
     }
 
+    function buildStatisticsRequestBody(formData) {
+        return {
+            customerLevel: trimValue(formData, "customerLevel"),
+            projectDateStart: trimValue(formData, "projectDateStart"),
+            projectDateEnd: trimValue(formData, "projectDateEnd"),
+            salesName: trimValue(formData, "salesName")
+        };
+    }
+
+    function validateStatisticsRequestBody(requestBody) {
+        if ((requestBody.projectDateStart && !requestBody.projectDateEnd)
+                || (!requestBody.projectDateStart && requestBody.projectDateEnd)) {
+            return "立项日期范围需要同时选择开始和结束日期";
+        }
+        if (requestBody.projectDateStart && requestBody.projectDateEnd
+                && requestBody.projectDateStart > requestBody.projectDateEnd) {
+            return "立项日期开始不能晚于结束";
+        }
+        return "";
+    }
+
+    function formatMoney(value) {
+        var numberValue = Number(value || 0);
+        if (!Number.isFinite(numberValue)) {
+            return "0.00";
+        }
+        return numberValue.toFixed(2);
+    }
+
+    function fillStatisticsCards(data) {
+        statisticsIdText.textContent = data.statisticsId || "未返回";
+        responsibleCustomersText.textContent = data.responsibleCustomers == null ? "0" : String(data.responsibleCustomers);
+        projectCountText.textContent = data.projectCount == null ? "0" : String(data.projectCount);
+        totalQuoteAmountText.textContent = formatMoney(data.totalQuoteAmount);
+        averageProjectAmountText.textContent = formatMoney(data.averageProjectAmount);
+        statisticsCards.hidden = false;
+    }
+
+    function formatStatisticsSuccessMessage(responseBody, requestBody) {
+        return JSON.stringify({
+            message: responseBody.message || "统计成功",
+            request: requestBody,
+            data: responseBody.data || {}
+        }, null, 2);
+    }
+
     function resetProjectForm() {
         projectForm.reset();
         memberRows.innerHTML = "";
@@ -391,6 +447,43 @@
     });
 
     resetProjectButton.addEventListener("click", resetProjectForm);
+
+    statisticsForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var requestBody = buildStatisticsRequestBody(new FormData(statisticsForm));
+        var validationMessage = validateStatisticsRequestBody(requestBody);
+        if (validationMessage) {
+            setResult(statisticsResultText, "error", validationMessage);
+            statisticsCards.hidden = true;
+            return;
+        }
+
+        submitStatisticsButton.disabled = true;
+        statisticsCards.hidden = true;
+        setResult(statisticsResultText, "", "统计中...");
+
+        postJson("/api/sales-performance/statistics", requestBody)
+            .then(function (result) {
+                if (!result.ok || !result.body.success) {
+                    setResult(statisticsResultText, "error", formatErrorMessage(result.body));
+                    return;
+                }
+                fillStatisticsCards(result.body.data || {});
+                setResult(statisticsResultText, "success", formatStatisticsSuccessMessage(result.body, requestBody));
+            })
+            .catch(function () {
+                setResult(statisticsResultText, "error", "网络请求失败，请确认后端服务已启动");
+            })
+            .finally(function () {
+                submitStatisticsButton.disabled = false;
+            });
+    });
+
+    resetStatisticsButton.addEventListener("click", function () {
+        statisticsForm.reset();
+        statisticsCards.hidden = true;
+        setResult(statisticsResultText, "", "等待统计");
+    });
 
     resetProjectForm();
     loadCustomerOptions();
