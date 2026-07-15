@@ -4,6 +4,7 @@ import com.quoteflow.dto.ApiResponse;
 import com.quoteflow.dto.SalesPerformanceStatisticsRequest;
 import com.quoteflow.dto.SalesPerformanceStatisticsVO;
 import com.quoteflow.service.SalesPerformanceService;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,7 @@ public class SalesPerformanceController {
      */
     @PostMapping("/statistics")
     public ApiResponse<SalesPerformanceStatisticsVO> createStatistics(
-            @RequestBody SalesPerformanceStatisticsRequest request) {
+            @Valid @RequestBody(required = false) SalesPerformanceStatisticsRequest request) {
         return ApiResponse.success(salesPerformanceService.createStatistics(request));
     }
 }

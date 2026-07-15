@@ -58,9 +58,33 @@ public final class FormFieldValueUtils {
      * @return 第一个数字值
      */
     public static BigDecimal getFirstNumber(ApiFormUser apiFormUser, String alias) {
+        return getFirstNumber(apiFormUser, alias, BigDecimal.ZERO);
+    }
+
+    /**
+     * 根据别名获取第一个数字值，字段缺失时返回默认值。
+     *
+     * @param apiFormUser 表单数据
+     * @param alias 字段别名
+     * @param defaultValue 默认值
+     * @return 第一个数字值
+     */
+    public static BigDecimal getFirstNumber(ApiFormUser apiFormUser, String alias, BigDecimal defaultValue) {
+        BigDecimal value = getFirstNumberOrNull(apiFormUser, alias);
+        return value == null ? defaultValue : value;
+    }
+
+    /**
+     * 根据别名获取第一个数字值，字段缺失或类型不匹配时返回 null。
+     *
+     * @param apiFormUser 表单数据
+     * @param alias 字段别名
+     * @return 第一个数字值
+     */
+    public static BigDecimal getFirstNumberOrNull(ApiFormUser apiFormUser, String alias) {
         Field field = findField(apiFormUser, alias);
         if (field == null || field.getValueList() == null || field.getValueList().isEmpty()) {
-            return BigDecimal.ZERO;
+            return null;
         }
         BaseFieldValue value = field.getValueList().get(0);
         if (value instanceof NumberFieldValue) {
@@ -75,7 +99,7 @@ public final class FormFieldValueUtils {
         if (value instanceof TextFieldValue && ((TextFieldValue) value).getVal() != null) {
             return new BigDecimal(((TextFieldValue) value).getVal());
         }
-        return BigDecimal.ZERO;
+        return null;
     }
 
     /**

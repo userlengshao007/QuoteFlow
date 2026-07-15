@@ -194,7 +194,8 @@ public class ChaoxingOfficeClientImpl implements ChaoxingOfficeClient {
             assertSuccess(response);
             return response;
         } catch (OfficeApiException exception) {
-            throw new BusinessException(ErrorCodeEnum.CHAOXING_SDK_ERROR, "根据审批数据 ID 检索审批数据失败", exception);
+            throw new BusinessException(
+                    ErrorCodeEnum.CHAOXING_SDK_ERROR, "根据审批数据 ID 检索审批数据失败", exception);
         }
     }
 
@@ -218,7 +219,8 @@ public class ChaoxingOfficeClientImpl implements ChaoxingOfficeClient {
             assertSuccess(response);
             return response;
         } catch (OfficeApiException exception) {
-            throw new BusinessException(ErrorCodeEnum.CHAOXING_SDK_ERROR, "获取顶部按钮选中审批数据失败", exception);
+            throw new BusinessException(
+                    ErrorCodeEnum.CHAOXING_SDK_ERROR, "获取顶部按钮选中审批数据失败", exception);
         }
     }
 

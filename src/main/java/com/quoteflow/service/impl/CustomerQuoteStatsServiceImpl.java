@@ -15,6 +15,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,6 +29,11 @@ import org.springframework.util.StringUtils;
 public class CustomerQuoteStatsServiceImpl implements CustomerQuoteStatsService {
 
     /**
+     * 日志记录器。
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerQuoteStatsServiceImpl.class);
+
+    /**
      * 客户报价统计返回字段。
      */
     private static final String PROJECT_RETURN_FIELDS =
@@ -36,6 +43,11 @@ public class CustomerQuoteStatsServiceImpl implements CustomerQuoteStatsService 
      * 单次 SDK 请求的最大选中数据量。
      */
     private static final Integer MAX_SELECTED_SIZE = 100;
+
+    /**
+     * 顶部按钮游标查询最大次数。
+     */
+    private static final Integer MAX_TOP_SEARCH_COUNT = 100;
 
     /**
      * 超星办公客户端。
@@ -57,16 +69,8 @@ public class CustomerQuoteStatsServiceImpl implements CustomerQuoteStatsService 
     public List<CustomerQuoteStatsItemVO> summarizeByCustomer(CustomerQuoteStatsRequest request) {
         Integer projectApproveFormId = requiredProjectApproveFormId();
         OfficeSdkProperties.Field field = officeSdkProperties.getField();
-        ApiSearchResponse response = chaoxingOfficeClient.searchFormData(
-                projectApproveFormId,
-                buildProjectReturnFields(field),
-                null,
-                request.getFormUserIds(),
-                1,
-                MAX_SELECTED_SIZE
-        );
-        List<ApiFormUser> selectedProjects = response.getData() == null ? new ArrayList<>()
-                : response.getData().getDataList();
+        List<ApiFormUser> selectedProjects = listProjectsByFormUserIds(
+                projectApproveFormId, buildProjectReturnFields(field), request.getFormUserIds());
         return groupByCustomer(selectedProjects, field);
     }
 
@@ -83,7 +87,7 @@ public class CustomerQuoteStatsServiceImpl implements CustomerQuoteStatsService 
     private List<ApiFormUser> listTopSelectedProjects(Long uid, String queryId, String returnFields) {
         List<ApiFormUser> selectedProjects = new ArrayList<>();
         String sortValues = null;
-        while (true) {
+        for (int searchCount = 1; searchCount <= MAX_TOP_SEARCH_COUNT; searchCount++) {
             ApiSearchResponse response = chaoxingOfficeClient.searchApproveTopDataByQueryId(
                     uid,
                     queryId,
@@ -109,6 +113,52 @@ public class CustomerQuoteStatsServiceImpl implements CustomerQuoteStatsService 
             }
             sortValues = nextSortValues;
         }
+        LOGGER.warn("顶部按钮选中数据游标查询超过最大次数，uid={}, queryId={}", uid, queryId);
+        return selectedProjects;
+    }
+
+    private List<ApiFormUser> listProjectsByFormUserIds(Integer projectApproveFormId,
+                                                        String returnFields,
+                                                        String formUserIds) {
+        List<ApiFormUser> selectedProjects = new ArrayList<>();
+        List<String> idList = splitFormUserIds(formUserIds);
+        for (int startIndex = 0; startIndex < idList.size(); startIndex += MAX_SELECTED_SIZE) {
+            String chunkIds = joinIds(idList, startIndex, Math.min(startIndex + MAX_SELECTED_SIZE, idList.size()));
+            ApiSearchResponse response = chaoxingOfficeClient.getApproveDataByFormUserIds(
+                    projectApproveFormId,
+                    chunkIds,
+                    returnFields
+            );
+            if (response.getData() != null && response.getData().getDataList() != null) {
+                selectedProjects.addAll(response.getData().getDataList());
+            }
+        }
+        return selectedProjects;
+    }
+
+    private List<String> splitFormUserIds(String formUserIds) {
+        List<String> idList = new ArrayList<>();
+        if (!StringUtils.hasText(formUserIds)) {
+            return idList;
+        }
+        String[] ids = formUserIds.split(",");
+        for (String id : ids) {
+            if (StringUtils.hasText(id)) {
+                idList.add(id.trim());
+            }
+        }
+        return idList;
+    }
+
+    private String joinIds(List<String> idList, int startIndex, int endIndex) {
+        StringBuilder builder = new StringBuilder();
+        for (int index = startIndex; index < endIndex; index++) {
+            if (builder.length() > 0) {
+                builder.append(',');
+            }
+            builder.append(idList.get(index));
+        }
+        return builder.toString();
     }
 
     private List<CustomerQuoteStatsItemVO> groupByCustomer(List<ApiFormUser> selectedProjects,

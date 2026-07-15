@@ -42,6 +42,16 @@ public class CustomerServiceImpl implements CustomerService {
             "[{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"},{\"alias\":\"%s\"}]";
 
     /**
+     * 单次查询最大条数。
+     */
+    private static final Integer MAX_PAGE_SIZE = 100;
+
+    /**
+     * 最大分页查询次数。
+     */
+    private static final Integer MAX_PAGE_COUNT = 100;
+
+    /**
      * 超星办公客户端。
      */
     private final ChaoxingOfficeClient chaoxingOfficeClient;
@@ -98,14 +108,30 @@ public class CustomerServiceImpl implements CustomerService {
         Integer customerFormId = requiredCustomerFormId();
         OfficeSdkProperties.Field field = officeSdkProperties.getField();
 
-        ApiSearchResponse response = chaoxingOfficeClient.searchFormData(
-                customerFormId, buildCustomerReturnFields(field), null, null, 1, 100);
         List<CustomerInfoDTO> customerList = new ArrayList<>();
-        if (response.getData() == null || response.getData().getDataList() == null) {
-            return customerList;
-        }
-        for (ApiFormUser apiFormUser : response.getData().getDataList()) {
-            customerList.add(toCustomerInfo(apiFormUser, field));
+        for (int currentPage = 1; currentPage <= MAX_PAGE_COUNT; currentPage++) {
+            ApiSearchResponse response = chaoxingOfficeClient.searchFormData(
+                    customerFormId,
+                    buildCustomerReturnFields(field),
+                    null,
+                    null,
+                    currentPage,
+                    MAX_PAGE_SIZE
+            );
+            if (response.getData() == null || response.getData().getDataList() == null
+                    || response.getData().getDataList().isEmpty()) {
+                return customerList;
+            }
+            for (ApiFormUser apiFormUser : response.getData().getDataList()) {
+                customerList.add(toCustomerInfo(apiFormUser, field));
+            }
+            Integer total = response.getData().getTotal();
+            if (total != null && customerList.size() >= total) {
+                return customerList;
+            }
+            if (response.getData().getDataList().size() < MAX_PAGE_SIZE) {
+                return customerList;
+            }
         }
         return customerList;
     }

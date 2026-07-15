@@ -61,7 +61,7 @@ public class ChaoxingProjectApprovalPushController {
             @RequestBody(required = false) String rawBody,
             @RequestParam Map<String, String> requestParamMap) {
         Map<String, Object> payload = parsePayload(rawBody, requestParamMap);
-        LOGGER.info("收到项目立项审批数据推送，payload={}", toJson(payload));
+        LOGGER.info("收到项目立项审批数据推送，payloadKeys={}", payload.keySet());
         return ApiResponse.success(salesPerformanceService.createPerformanceByApprovalPush(payload));
     }
 
@@ -71,7 +71,8 @@ public class ChaoxingProjectApprovalPushController {
                 return objectMapper.readValue(rawBody, new TypeReference<Map<String, Object>>() {
                 });
             } catch (JsonProcessingException exception) {
-                throw new BusinessException(ErrorCodeEnum.INVALID_PARAMETER, "数据推送请求体不是合法 JSON", exception);
+                throw new BusinessException(
+                        ErrorCodeEnum.INVALID_PARAMETER, "数据推送请求体不是合法 JSON", exception);
             }
         }
 
@@ -82,12 +83,4 @@ public class ChaoxingProjectApprovalPushController {
         return payload;
     }
 
-    private String toJson(Map<String, Object> payload) {
-        try {
-            return objectMapper.writeValueAsString(payload);
-        } catch (JsonProcessingException exception) {
-            LOGGER.warn("项目立项审批推送 payload 序列化失败", exception);
-            return "{}";
-        }
-    }
 }

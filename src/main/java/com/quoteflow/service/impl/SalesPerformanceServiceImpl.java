@@ -33,9 +33,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -69,6 +70,11 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
     private static final Integer MAX_PROJECT_PAGE_SIZE = 100;
 
     /**
+     * 最大项目分页查询次数。
+     */
+    private static final Integer MAX_PROJECT_PAGE_COUNT = 100;
+
+    /**
      * 审批最终通过状态 ID。
      */
     private static final Integer APPROVED_STATUS_ID = 1;
@@ -82,6 +88,11 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
      * 推送 payload 中常见的项目审批数据 ID 字段名。
      */
     private static final String[] PROJECT_FORM_USER_ID_KEYS = {"formUserId", "form_user_id", "id"};
+
+    /**
+     * 数据推送主数据字段名。
+     */
+    private static final String PAYLOAD_DATA_KEY = "data";
 
     /**
      * 业绩写入业务唯一 ID 前缀。
@@ -129,19 +140,14 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
 
     @Override
     public SalesPerformanceStatisticsVO createStatistics(SalesPerformanceStatisticsRequest request) {
-        Integer projectApproveFormId = requiredProjectApproveFormId();
+        SalesPerformanceStatisticsRequest safeRequest = request == null ? new SalesPerformanceStatisticsRequest()
+                : request;
         OfficeSdkProperties.Field field = officeSdkProperties.getField();
-        ApiSearchResponse projectResponse = chaoxingOfficeClient.searchApproveData(
-                projectApproveFormId,
-                buildProjectReturnFields(field),
-                buildProjectSearchFilter(request, field),
-                1,
-                MAX_PROJECT_PAGE_SIZE
-        );
+        List<ApiFormUser> projectList = listStatisticsProjects(safeRequest, field);
 
-        StatisticsContext context = calculateStatistics(projectResponse, request, field);
+        StatisticsContext context = calculateStatistics(projectList, safeRequest, field);
         String statisticsId = buildStatisticsId();
-        FormSubmitVO formSubmitVO = saveStatisticsForm(request, context, field, statisticsId);
+        FormSubmitVO formSubmitVO = saveStatisticsForm(safeRequest, context, field, statisticsId);
         return toStatisticsVO(formSubmitVO, statisticsId, context);
     }
 
@@ -165,7 +171,10 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
 
         CustomerInfoDTO customerInfo = customerService.getCustomerByCustomerId(customerId);
         ContactDTO salesContact = requiredMainContact(customerInfo);
-        BigDecimal quoteTotal = FormFieldValueUtils.getFirstNumber(project, field.getTotalQuoteAmount());
+        BigDecimal quoteTotal = FormFieldValueUtils.getFirstNumberOrNull(project, field.getTotalQuoteAmount());
+        if (quoteTotal == null) {
+            throw new BusinessException(ErrorCodeEnum.INVALID_PARAMETER, "项目报价总额不能为空");
+        }
 
         FormSubmitVO formSubmitVO = savePerformanceForm(project, salesContact, quoteTotal, field);
         return processedPushResult(project.getFormUserId(), formSubmitVO);
@@ -234,7 +243,7 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
     }
 
     private Long extractLong(Object source, String... targetKeys) {
-        Object value = findValue(source, targetKeys);
+        Object value = findPayloadValue(source, targetKeys);
         if (value == null) {
             return null;
         }
@@ -245,54 +254,37 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
             try {
                 return Long.valueOf((String) value);
             } catch (NumberFormatException exception) {
-                throw new BusinessException(ErrorCodeEnum.INVALID_PARAMETER, "项目审批数据 ID 格式不正确", exception);
+                throw new BusinessException(
+                        ErrorCodeEnum.INVALID_PARAMETER, "项目审批数据 ID 格式不正确", exception);
             }
         }
         return null;
     }
 
     @SuppressWarnings("unchecked")
-    private Object findValue(Object source, String... targetKeys) {
-        if (source instanceof Map) {
-            Map<String, Object> sourceMap = (Map<String, Object>) source;
-            for (Map.Entry<String, Object> entry : sourceMap.entrySet()) {
-                if (matchesKey(entry.getKey(), targetKeys)) {
-                    return entry.getValue();
-                }
-            }
-            for (Map.Entry<String, Object> entry : sourceMap.entrySet()) {
-                Object value = findValue(entry.getValue(), targetKeys);
-                if (value != null) {
-                    return value;
-                }
-            }
+    private Object findPayloadValue(Object source, String... targetKeys) {
+        if (!(source instanceof Map)) {
+            return null;
         }
-        if (source instanceof List) {
-            for (Object item : (List<?>) source) {
-                Object value = findValue(item, targetKeys);
-                if (value != null) {
-                    return value;
-                }
-            }
+        Map<String, Object> sourceMap = (Map<String, Object>) source;
+        Object value = findMapValue(sourceMap, targetKeys);
+        if (value != null) {
+            return value;
+        }
+        Object data = sourceMap.get(PAYLOAD_DATA_KEY);
+        if (data instanceof Map) {
+            return findMapValue((Map<String, Object>) data, targetKeys);
         }
         return null;
     }
 
-    private boolean matchesKey(String sourceKey, String... targetKeys) {
-        String normalizedSourceKey = normalizeKey(sourceKey);
+    private Object findMapValue(Map<String, Object> sourceMap, String... targetKeys) {
         for (String targetKey : targetKeys) {
-            if (normalizedSourceKey.equals(normalizeKey(targetKey))) {
-                return true;
+            if (sourceMap.containsKey(targetKey)) {
+                return sourceMap.get(targetKey);
             }
         }
-        return false;
-    }
-
-    private String normalizeKey(String key) {
-        if (key == null) {
-            return "";
-        }
-        return key.replace("_", "").replace("-", "").toLowerCase(Locale.ROOT);
+        return null;
     }
 
     private LogicSearchFilter buildProjectSearchFilter(SalesPerformanceStatisticsRequest request,
@@ -314,16 +306,44 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
         return filter;
     }
 
-    private StatisticsContext calculateStatistics(ApiSearchResponse projectResponse,
+    private List<ApiFormUser> listStatisticsProjects(SalesPerformanceStatisticsRequest request,
+                                                     OfficeSdkProperties.Field field) {
+        Integer projectApproveFormId = requiredProjectApproveFormId();
+        List<ApiFormUser> projectList = new ArrayList<>();
+        for (int currentPage = 1; currentPage <= MAX_PROJECT_PAGE_COUNT; currentPage++) {
+            ApiSearchResponse projectResponse = chaoxingOfficeClient.searchApproveData(
+                    projectApproveFormId,
+                    buildProjectReturnFields(field),
+                    buildProjectSearchFilter(request, field),
+                    currentPage,
+                    MAX_PROJECT_PAGE_SIZE
+            );
+            if (projectResponse.getData() == null || projectResponse.getData().getDataList() == null
+                    || projectResponse.getData().getDataList().isEmpty()) {
+                return projectList;
+            }
+            projectList.addAll(projectResponse.getData().getDataList());
+            Integer total = projectResponse.getData().getTotal();
+            if (total != null && projectList.size() >= total) {
+                return projectList;
+            }
+            if (projectResponse.getData().getDataList().size() < MAX_PROJECT_PAGE_SIZE) {
+                return projectList;
+            }
+        }
+        return projectList;
+    }
+
+    private StatisticsContext calculateStatistics(List<ApiFormUser> projectList,
                                                   SalesPerformanceStatisticsRequest request,
                                                   OfficeSdkProperties.Field field) {
         StatisticsContext context = new StatisticsContext();
-        if (projectResponse.getData() == null || projectResponse.getData().getDataList() == null) {
-            return context;
-        }
-        List<ApiFormUser> projectList = projectResponse.getData().getDataList();
+        Map<String, CustomerInfoDTO> customerInfoMap = buildCustomerInfoMap(request);
         for (ApiFormUser project : projectList) {
-            if (!matchesSalesName(project, request.getSalesName(), field)) {
+            if (!isApproved(project)) {
+                continue;
+            }
+            if (!matchesSalesName(project, request.getSalesName(), field, customerInfoMap)) {
                 continue;
             }
             String customerId = FormFieldValueUtils.getFirstText(project, field.getCustomerId());
@@ -337,7 +357,24 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
         return context;
     }
 
-    private boolean matchesSalesName(ApiFormUser project, String salesName, OfficeSdkProperties.Field field) {
+    private Map<String, CustomerInfoDTO> buildCustomerInfoMap(SalesPerformanceStatisticsRequest request) {
+        Map<String, CustomerInfoDTO> customerInfoMap = new HashMap<>();
+        if (!StringUtils.hasText(request.getSalesName())) {
+            return customerInfoMap;
+        }
+        List<CustomerInfoDTO> customerList = customerService.listCustomers();
+        for (CustomerInfoDTO customerInfo : customerList) {
+            if (StringUtils.hasText(customerInfo.getCustomerId())) {
+                customerInfoMap.put(customerInfo.getCustomerId(), customerInfo);
+            }
+        }
+        return customerInfoMap;
+    }
+
+    private boolean matchesSalesName(ApiFormUser project,
+                                     String salesName,
+                                     OfficeSdkProperties.Field field,
+                                     Map<String, CustomerInfoDTO> customerInfoMap) {
         if (!StringUtils.hasText(salesName)) {
             return true;
         }
@@ -345,17 +382,11 @@ public class SalesPerformanceServiceImpl implements SalesPerformanceService {
         if (!StringUtils.hasText(customerId)) {
             return false;
         }
-        try {
-            CustomerInfoDTO customerInfo = customerService.getCustomerByCustomerId(customerId);
-            return customerInfo.getMainContact() != null
-                    && customerInfo.getMainContact().getName() != null
-                    && customerInfo.getMainContact().getName().contains(salesName);
-        } catch (BusinessException exception) {
-            if (ErrorCodeEnum.CUSTOMER_NOT_FOUND.equals(exception.getErrorCodeEnum())) {
-                return false;
-            }
-            throw exception;
-        }
+        CustomerInfoDTO customerInfo = customerInfoMap.get(customerId);
+        return customerInfo != null
+                && customerInfo.getMainContact() != null
+                && customerInfo.getMainContact().getName() != null
+                && customerInfo.getMainContact().getName().contains(salesName);
     }
 
     private FormSubmitVO saveStatisticsForm(SalesPerformanceStatisticsRequest request,

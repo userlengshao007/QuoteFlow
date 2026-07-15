@@ -187,7 +187,8 @@ public class CustomerQuoteStatsPageController {
                 .append("-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;}")
                 .append(".page{max-width:1040px;margin:0 auto;padding:28px 20px 40px;}")
                 .append("h1{margin:0 0 18px;font-size:24px;font-weight:650;}")
-                .append(".summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px;}")
+                .append(".summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));")
+                .append("gap:12px;margin-bottom:18px;}")
                 .append(".metric{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;}")
                 .append(".metric span{display:block;color:#6b7280;font-size:13px;margin-bottom:8px;}")
                 .append(".metric strong{font-size:22px;font-weight:650;}")
@@ -197,7 +198,8 @@ public class CustomerQuoteStatsPageController {
                 .append("th{background:#f9fafb;color:#4b5563;font-weight:650;}")
                 .append("tr:last-child td{border-bottom:0;}")
                 .append(".amount{text-align:right;font-variant-numeric:tabular-nums;}")
-                .append(".empty{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:32px;text-align:center;")
+                .append(".empty{background:#fff;border:1px solid #e5e7eb;border-radius:8px;")
+                .append("padding:32px;text-align:center;")
                 .append("color:#6b7280;}")
                 .append(".meta{margin-top:14px;color:#9ca3af;font-size:12px;word-break:break-all;}")
                 .append("@media(max-width:720px){.summary{grid-template-columns:1fr;}th,td{padding:10px 8px;}}")
@@ -213,7 +215,8 @@ public class CustomerQuoteStatsPageController {
             html.append("<section class=\"empty\">未获取到本次选中的项目报价数据</section>");
         } else {
             html.append("<table><thead><tr>")
-                    .append("<th>客户 ID</th><th>客户名称</th><th>项目数量</th><th class=\"amount\">报价总额</th>")
+                    .append("<th>客户 ID</th><th>客户名称</th><th>项目数量</th>")
+                    .append("<th class=\"amount\">报价总额</th>")
                     .append("</tr></thead><tbody>");
             for (CustomerQuoteStatsItemVO item : itemList) {
                 html.append("<tr>")
